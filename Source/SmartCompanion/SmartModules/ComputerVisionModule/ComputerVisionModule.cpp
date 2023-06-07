@@ -22,8 +22,16 @@ void ComputerVisionModule::preProcess()
 	cv::Mat blob;
 	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
 
-	primaryModel.setInput(blob);
-	outputs = primaryModel.forward();
+    primaryModel.setInput(blob);
+
+    try
+    {
+        outputs = primaryModel.forward();
+    }
+    catch (cv::Exception& e)
+    {
+        e.what();
+    }
 }
 
 std::pair<int, int> ComputerVisionModule::postProcess()
@@ -77,25 +85,37 @@ float ComputerVisionModule::getRotateAngle(int x0, int y0)
 
 void ComputerVisionModule::Initialize()
 {
-	redModel = cv::dnn::readNet("..\\..\\..\\..\\Models\\OpenCV\\redModel.onnx");
-	blueModel = cv::dnn::readNet("..\\..\\..\\..\\Models\\OpenCV\\redModel.onnx");
+    redModel = cv::dnn::readNet("C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx");
+	//blueModel = cv::dnn::readNet("D:\\SmartCompanion\\SmartComapnion\\Models\\OpenCV\\redModel.onnx");
 }
 
 float ComputerVisionModule::Run()
 {
-	// сделать скриншот и сохранить
     auto controller = UGameplayStatics::GetPlayerController(worldContext, 0);
     auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
     character->ActivateFirstPersonView();
 
     system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
 
-    img = cv::imread("..\\..\\..\\..\\Screenshots\\screen.png");
+    img = cv::imread("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png");
 
     preProcess();
     const auto [x, y] = postProcess();
 
 	return (!x && !y) ? 0 : getRotateAngle(x, y);
+
+    /*
+    system("python D:\\SmartCompanion\\SmartCompanion\\Script\\yolov8.py");
+
+    std::ifstream coordsFile("D:\\SmartCompanion\\SmartCompanion\\Script\\coords.txt");
+    int x, y;
+    coordsFile >> x >> y;
+    coordsFile.close();
+    */
+
+    character->DeactivateFirstPersonView();
+
+    return (!x && !y) ? 0 : getRotateAngle(x, y);
 }
 
 void ComputerVisionModule::SetPrimaryModel(const std::string& modelName)

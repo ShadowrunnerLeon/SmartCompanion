@@ -5,7 +5,7 @@
 
 #include <string>
 
-//#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\lib\\opencv_world470.lib")
+//#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
 
 class ComputerVisionModule : public ISmartModule
 {

@@ -3,13 +3,13 @@ import cv2
 import numpy as np
 
 #myScreenshot = pyautogui.screenshot()
-#myScreenshot.resize(640, 359)
+#myScreenshot.resize((640, 359))
 #myScreenshot.save(r'D:\SmartCompanion\SmartCompanion\Screenshots\screen.png')
 
 modelPath = 'C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx'
 
 net = cv2.dnn.readNet(modelPath)
-img = cv2.imread('C:\\Users\\sorok\\Downloads\\yolov8\\red\\test\\images\\7.png')
+img = cv2.imread('D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png')
 
 (height, width) = img.shape[:2]
 xFactor = width / 640

@@ -24,5 +24,5 @@ void Kill::GeneralRun()
 	const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
 	character->AddMovementInput(direction, angle);
 
-	character->OnPrimaryAction();
+	//character->OnPrimaryAction();
 }
