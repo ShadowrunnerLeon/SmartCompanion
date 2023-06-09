@@ -7,7 +7,7 @@ class KillBlue : public ICommand, public Kill
 {
 	public:
 		KillBlue();
-		KillBlue(ComputerVisionModule& _computerVisionModule);
+		KillBlue(ComputerVisionModule* _computerVisionModule);
 
 		void Run() override;
 };

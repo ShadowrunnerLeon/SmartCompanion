@@ -22,16 +22,9 @@ void ComputerVisionModule::preProcess()
 	cv::Mat blob;
 	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
 
-    primaryModel.setInput(blob);
-
-    try
-    {
-        outputs = primaryModel.forward();
-    }
-    catch (cv::Exception& e)
-    {
-        e.what();
-    }
+    auto net = cv::dnn::readNet(nets[primaryModelName]);
+    net.setInput(blob);
+    outputs = net.forward();
 }
 
 std::pair<int, int> ComputerVisionModule::postProcess()
@@ -73,6 +66,11 @@ std::pair<int, int> ComputerVisionModule::postProcess()
 
     // Draw bounding box.
     cv::rectangle(img, cv::Point(left, top), cv::Point(left + width, top + height), cv::Scalar(0, 255, 0), 3);
+
+    // Display image
+    cv::imshow("Detected Enemy", img);
+    cv::waitKey(0);
+
     return std::make_pair<int, int>(int((left + width) / 2), int((top + height) / 2));
 }
 
@@ -85,8 +83,8 @@ float ComputerVisionModule::getRotateAngle(int x0, int y0)
 
 void ComputerVisionModule::Initialize()
 {
-    redModel = cv::dnn::readNet("C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx");
-	//blueModel = cv::dnn::readNet("D:\\SmartCompanion\\SmartComapnion\\Models\\OpenCV\\redModel.onnx");
+    nets["red"] = "C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx";
+    nets["blue"] = "C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx";
 }
 
 float ComputerVisionModule::Run()
@@ -101,8 +99,6 @@ float ComputerVisionModule::Run()
 
     preProcess();
     const auto [x, y] = postProcess();
-
-	return (!x && !y) ? 0 : getRotateAngle(x, y);
 
     /*
     system("python D:\\SmartCompanion\\SmartCompanion\\Script\\yolov8.py");
@@ -120,7 +116,7 @@ float ComputerVisionModule::Run()
 
 void ComputerVisionModule::SetPrimaryModel(const std::string& modelName)
 {
-    modelName == "red" ? primaryModel = redModel : primaryModel = blueModel;
+    primaryModelName = modelName;
     UE_LOG(LogTemp, Display, TEXT("SetPrimaryModel"));
 }
 

@@ -3,6 +3,7 @@
 #include "../../../../ThirdParty/OpenCV/include/opencv2/opencv.hpp"
 #include "../ISmartModule.h"
 
+#include <map>
 #include <string>
 
 //#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
@@ -12,10 +13,11 @@ class ComputerVisionModule : public ISmartModule
 
 	private:
 		cv::Mat img;
-		cv::dnn::Net redModel, blueModel;
-		cv::dnn::Net primaryModel;
 		cv::Mat outputs;
 		const int xLength = 640;
+
+		std::map<std::string, std::string> nets;
+		std::string primaryModelName;
 
 	private:
 		void				preProcess();

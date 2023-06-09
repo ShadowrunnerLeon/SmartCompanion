@@ -13,3 +13,13 @@ ASmartCompanionGameMode::ASmartCompanionGameMode()
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
 }
+
+void ASmartCompanionGameMode::ActivateCommandHandler()
+{
+	commandHandler->Activate();
+}
+
+void ASmartCompanionGameMode::DeactivateCommandHandler()
+{
+	commandHandler->Deactivate();
+}

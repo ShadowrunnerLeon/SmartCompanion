@@ -9,6 +9,7 @@
 #include "TP_Projectile.h"
 #include "GameFramework/InputSettings.h"
 #include "Animation/AnimInstance.h"
+#include "SmartCompanionGameMode.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ASmartCompanionCharacter
@@ -200,10 +201,10 @@ void ASmartCompanionCharacter::StealthDeactivate()
 
 void ASmartCompanionCharacter::SmartActivate()
 {
-	commandHandler->Activate();
+	(GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->ActivateCommandHandler();
 }
 
 void ASmartCompanionCharacter::SmartDeactivate()
 {
-	commandHandler->Deactivate();
+	(GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->DeactivateCommandHandler();
 }

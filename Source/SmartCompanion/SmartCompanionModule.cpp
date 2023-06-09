@@ -9,11 +9,11 @@ void SmartCompanionModule::StartupModule()
 
 	const FString LibVoskPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/libvosk.dll"));
 	const FString LibPortAudioPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/portaudio_x64.dll"));
-	//const FString LibOpenCVPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/opencv_world470.dll"));
+	const FString LibOpenCVPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/opencv_world470.dll"));
 
 	DynamicLibVoskHandle = FPlatformProcess::GetDllHandle(*LibVoskPath);
 	DynamicLibPortAudioHandle = FPlatformProcess::GetDllHandle(*LibPortAudioPath);
-	//DynamicLibOpenCVHandle = FPlatformProcess::GetDllHandle(*LibOpenCVPath);
+	DynamicLibOpenCVHandle = FPlatformProcess::GetDllHandle(*LibOpenCVPath);
 
 	if (DynamicLibVoskHandle)
 	{
@@ -32,7 +32,7 @@ void SmartCompanionModule::StartupModule()
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("portaudio_x64.dll failed to load!"));
 	}
-	/*
+
 	if (DynamicLibOpenCVHandle)
 	{
 		UE_LOG(LogTemp, Log, TEXT("opencv_world470.dll loaded successfully!"));
@@ -41,7 +41,6 @@ void SmartCompanionModule::StartupModule()
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("opencv_world470.dll failed to load!"));
 	}
-	*/
 }
 
 void SmartCompanionModule::ShutdownModule()
@@ -51,10 +50,9 @@ void SmartCompanionModule::ShutdownModule()
 
 	FPlatformProcess::FreeDllHandle(DynamicLibPortAudioHandle);
 	DynamicLibPortAudioHandle = nullptr;
-	/*
+
 	FPlatformProcess::FreeDllHandle(DynamicLibOpenCVHandle);
 	DynamicLibOpenCVHandle = nullptr;
-	*/
 }
 
 IMPLEMENT_PRIMARY_GAME_MODULE(SmartCompanionModule, SmartCompanion, "SmartCompanion" );

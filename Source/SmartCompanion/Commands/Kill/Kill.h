@@ -5,11 +5,11 @@
 class Kill
 {
 	protected:
-		ComputerVisionModule computerVisionModule;
+		ComputerVisionModule* computerVisionModule;
 	
 	public:
 		Kill();
-		Kill(ComputerVisionModule& _computerVisionModule);
+		Kill(ComputerVisionModule* _computerVisionModule);
 
 		void GeneralRun();
 };

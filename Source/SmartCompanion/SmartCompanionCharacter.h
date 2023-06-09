@@ -112,10 +112,6 @@ protected:
 
 	void Tick(float DeltaTime);
 
-private:
-	//SpeechRecognitionModule speechRecognitionModule;
-	TSharedPtr<CommandHandler> commandHandler = MakeShared<CommandHandler>(GetWorld());
-
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

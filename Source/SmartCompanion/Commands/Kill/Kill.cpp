@@ -7,15 +7,15 @@ Kill::Kill()
 {
 }
 
-Kill::Kill(ComputerVisionModule& _computerVisionModule) : computerVisionModule(_computerVisionModule)
+Kill::Kill(ComputerVisionModule* _computerVisionModule) : computerVisionModule(_computerVisionModule)
 {
 }
 
 void Kill::GeneralRun()
 {
-	float angle = computerVisionModule.Run();
+	float angle = computerVisionModule->Run();
 
-	auto controller = UGameplayStatics::GetPlayerController(computerVisionModule.GetWorldContext(), 0);
+	auto controller = UGameplayStatics::GetPlayerController(computerVisionModule->GetWorldContext(), 0);
 	auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
 
 	const FRotator rotation = character->GetControlRotation();

@@ -4,12 +4,12 @@ KillRed::KillRed()
 {
 }
 
-KillRed::KillRed(ComputerVisionModule& _computerVisionModule) : Kill(_computerVisionModule)
+KillRed::KillRed(ComputerVisionModule* _computerVisionModule) : Kill(_computerVisionModule)
 {
 }
 
 void KillRed::Run()
 {
-	computerVisionModule.SetPrimaryModel("red");
+	computerVisionModule->SetPrimaryModel("red");
 	GeneralRun();
 }
