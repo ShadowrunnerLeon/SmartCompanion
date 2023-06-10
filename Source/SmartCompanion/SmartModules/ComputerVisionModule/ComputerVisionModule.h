@@ -6,6 +6,10 @@
 #include <map>
 #include <string>
 
+#include "Windows/AllowWindowsPlatformTypes.h"
+#include <windows.h>
+#include "Windows/HideWindowsPlatformTypes.h"
+
 //#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
 
 class ComputerVisionModule : public ISmartModule
@@ -23,6 +27,10 @@ class ComputerVisionModule : public ISmartModule
 		void				preProcess();
 		std::pair<int, int>	postProcess();
 		float				getRotateAngle(int x0, int y0);
+
+		// add Linux and OSX support
+		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
+		cv::Mat				captureScreenMat(HWND hwnd);
 
 	public:
 		ComputerVisionModule();

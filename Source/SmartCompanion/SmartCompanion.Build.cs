@@ -48,45 +48,6 @@ public class SmartCompanion : ModuleRules
         PublicDelayLoadDLLs.Add("opencv_world470.dll");
 
         CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_world470.dll", Target);
-
-        /*
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_core470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_highgui470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_imgcodecs470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_calib3d470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_imgproc470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_videoio470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_features2d470.lib");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_flann470.lib");
-
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_core470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_highgui470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_imgcodecs470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_calib3d470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_imgproc470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_videoio470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_features2d470.dll");
-        PublicAdditionalLibraries.Add("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_flann470.dll");
-
-
-        PublicDelayLoadDLLs.Add("opencv_core470.dll");
-        PublicDelayLoadDLLs.Add("opencv_highgui470.dll");
-        PublicDelayLoadDLLs.Add("opencv_imgcodecs470.dll");
-        PublicDelayLoadDLLs.Add("opencv_calib3d470.dll");
-        PublicDelayLoadDLLs.Add("opencv_imgproc470.dll");
-        PublicDelayLoadDLLs.Add("opencv_videoio470.dll");
-        PublicDelayLoadDLLs.Add("opencv_features2d470.dll");
-        PublicDelayLoadDLLs.Add("opencv_flann470.dll");
-
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_core470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_highgui470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_imgcodecs470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_calib3d470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_imgproc470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_videoio470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_features2d470.dll", Target);
-        CopyToBinaries("D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\bin\\opencv_flann470.dll", Target);
-        */
     }
 
     public SmartCompanion(ReadOnlyTargetRules Target) : base(Target)
@@ -101,7 +62,10 @@ public class SmartCompanion : ModuleRules
             "InputCore",
             "HeadMountedDisplay",
             "RHI",
-            "RenderCore"
+            "RenderCore",
+            "Slate",
+            "SlateCore",
+            "ApplicationCore"
         });
 
         LoadVosk(Target);
