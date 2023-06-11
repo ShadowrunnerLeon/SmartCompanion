@@ -94,17 +94,11 @@ float ComputerVisionModule::Run()
     auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
     character->ActivateFirstPersonView();
 
-<<<<<<< HEAD
-    //system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
-
     for (int i = 0; i < 5; ++i)
     {
         img = captureScreenMat(GetDesktopWindow());
         cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
     }
-=======
-    system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
->>>>>>> parent of 456ea8b (create screen on C++)
 
     img = cv::imread("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png");
 
