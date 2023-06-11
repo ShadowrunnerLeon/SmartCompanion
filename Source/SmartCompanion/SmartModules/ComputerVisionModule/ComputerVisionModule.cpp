@@ -3,7 +3,6 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
-#include "GenericPlatform/GenericPlatformProcess.h"
 
 #include <vector>
 #include <fstream>
@@ -58,8 +57,6 @@ std::pair<int, int> ComputerVisionModule::postProcess()
     std::vector<int> indices;
     cv::dnn::NMSBoxes(boxes, confidences, 0.25, 0.45, indices, 0.5);
 
-    if (!indices.size()) return std::make_pair<int, int>(0, 0);
-
     int idx = indices[0];
     cv::Rect box = boxes[idx];
     int left = box.x;
@@ -85,62 +82,6 @@ float ComputerVisionModule::getRotateAngle(int x0, int y0)
     return alpha / PI;
 }
 
-BITMAPINFOHEADER ComputerVisionModule::createBitmapHeader(int width, int height)
-{
-    BITMAPINFOHEADER  bi;
-
-    // create a bitmap
-    bi.biSize = sizeof(BITMAPINFOHEADER);
-    bi.biWidth = width;
-    bi.biHeight = -height;  //this is the line that makes it draw upside down or not
-    bi.biPlanes = 1;
-    bi.biBitCount = 32;
-    bi.biCompression = BI_RGB;
-    bi.biSizeImage = 0;
-    bi.biXPelsPerMeter = 0;
-    bi.biYPelsPerMeter = 0;
-    bi.biClrUsed = 0;
-    bi.biClrImportant = 0;
-
-    return bi;
-}
-
-cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
-{
-    cv::Mat src;
-
-    // get handles to a device context (DC)
-    HDC hwindowDC = GetDC(hwnd);
-    HDC hwindowCompatibleDC = CreateCompatibleDC(hwindowDC);
-    SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
-
-    // define scale, height and width
-    int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-    int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
-    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-
-    // create mat object
-    src.create(height, width, CV_8UC4);
-
-    // create a bitmap
-    HBITMAP hbwindow = CreateCompatibleBitmap(hwindowDC, width, height);
-    BITMAPINFOHEADER bi = createBitmapHeader(width, height);
-
-    // use the previously created device context with the bitmap
-    SelectObject(hwindowCompatibleDC, hbwindow);
-
-    // copy from the window device context to the bitmap device context
-    StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height, SRCCOPY);
-    GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, src.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-
-    DeleteObject(hbwindow);
-    DeleteDC(hwindowCompatibleDC);
-    ReleaseDC(hwnd, hwindowDC);
-
-    return src;
-}
-
 void ComputerVisionModule::Initialize()
 {
     nets["red"] = "C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx";
@@ -153,6 +94,7 @@ float ComputerVisionModule::Run()
     auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
     character->ActivateFirstPersonView();
 
+<<<<<<< HEAD
     //system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
 
     for (int i = 0; i < 5; ++i)
@@ -160,12 +102,11 @@ float ComputerVisionModule::Run()
         img = captureScreenMat(GetDesktopWindow());
         cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
     }
+=======
+    system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
+>>>>>>> parent of 456ea8b (create screen on C++)
 
     img = cv::imread("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png");
-
-    cv::Mat resizedImg;
-    cv::resize(img, resizedImg, cv::Size(640, 359));
-    img = resizedImg;
 
     preProcess();
     const auto [x, y] = postProcess();
