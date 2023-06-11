@@ -25,14 +25,7 @@ void ComputerVisionModule::preProcess()
 
     auto net = cv::dnn::readNet(nets[primaryModelName]);
     net.setInput(blob);
-    try
-    {
-        outputs = net.forward();
-    }
-    catch (cv::Exception& e)
-    {
-        e.what();
-    }
+    outputs = net.forward();
 }
 
 std::pair<int, int> ComputerVisionModule::postProcess()
@@ -86,6 +79,7 @@ std::pair<int, int> ComputerVisionModule::postProcess()
 
 float ComputerVisionModule::getRotateAngle(int x0, int y0)
 {
+    if (!y0) return 0;
     float alpha = atan((xLength / 2 - x0) / y0);
     if (x0 < xLength) alpha *= -1;
     return alpha / PI;
@@ -161,17 +155,11 @@ float ComputerVisionModule::Run()
 
     //system("python D:\\SmartCompanion\\SmartCompanion\\Script\\screen.py");
 
-    // creation of screen faster than ActivateFirstPersonView
-    // because SetPNGHeaderAndSave calls 2 times
-    img = captureScreenMat(GetDesktopWindow());
-    std::vector<uchar> header;
-    cv::imencode(".png", img, header);
-    cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
-    header.clear();
-
-    img = captureScreenMat(GetDesktopWindow());
-    cv::imencode(".png", img, header);
-    cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
+    for (int i = 0; i < 5; ++i)
+    {
+        img = captureScreenMat(GetDesktopWindow());
+        cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
+    }
 
     img = cv::imread("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png");
 
@@ -191,7 +179,7 @@ float ComputerVisionModule::Run()
     coordsFile.close();
     */
 
-    character->DeactivateFirstPersonView();
+    //character->DeactivateFirstPersonView();
 
     return (!x && !y) ? 0 : getRotateAngle(x, y);
 }

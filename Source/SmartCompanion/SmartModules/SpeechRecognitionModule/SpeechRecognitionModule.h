@@ -15,7 +15,7 @@ class SpeechRecognitionModule : public ISmartModule
 		VoskModel* model;
 		VoskRecognizer* recognizer;
 		PaStream* stream;
-		// сборщик мусора должен захватить
+
 		char data[4096];
 
 	public:
