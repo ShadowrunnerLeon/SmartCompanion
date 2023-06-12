@@ -31,6 +31,7 @@ class CommandHandler : public FRunnable
 		bool isActivateSpeechRecognition;
 
 		std::map<std::string, std::shared_ptr<ICommand>> commandStorage;
+
 		SpeechRecognitionModule speechRecoginitonModule;
 		ComputerVisionModule computerVisionModule;
 

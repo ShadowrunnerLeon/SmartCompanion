@@ -6,6 +6,10 @@
 #include <map>
 #include <string>
 
+#include "Windows/AllowWindowsPlatformTypes.h"
+#include <windows.h>
+#include "Windows/HideWindowsPlatformTypes.h"
+
 //#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
 
 class ComputerVisionModule : public ISmartModule
@@ -16,6 +20,11 @@ class ComputerVisionModule : public ISmartModule
 		cv::Mat outputs;
 		const int xLength = 640;
 
+		// postProcess
+		std::vector<float> confidences;
+		std::vector<cv::Rect> boxes;
+		std::vector<int> indices;
+
 		std::map<std::string, std::string> nets;
 		std::string primaryModelName;
 
@@ -23,6 +32,9 @@ class ComputerVisionModule : public ISmartModule
 		void				preProcess();
 		std::pair<int, int>	postProcess();
 		float				getRotateAngle(int x0, int y0);
+
+		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
+		cv::Mat				captureScreenMat(HWND hwnd);
 
 	public:
 		ComputerVisionModule();
