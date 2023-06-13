@@ -30,6 +30,8 @@ This project is an example of a game system using voice recognition modules and 
 # Screenshots
 - Speech Recognition
 
+![Image alt](https://github.com/ShadowrunnerLeon/SmartCompanion/raw/main/Screenshots/nlp.png)
+
 - Computer Vision
 
 ![Image alt](https://github.com/ShadowrunnerLeon/SmartCompanion/raw/main/Screenshots/cv.png)
