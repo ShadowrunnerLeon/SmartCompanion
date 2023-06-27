@@ -142,8 +142,8 @@ cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
 
 void ComputerVisionModule::Initialize()
 {
-    nets["red"] = "C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx";
-    nets["blue"] = "C:\\Users\\sorok\\Downloads\\yolov8\\runs\\detect\\train\\weights\\best.onnx";
+    nets["red"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
+    nets["blue"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
 }
 
 float ComputerVisionModule::Run()
@@ -155,10 +155,10 @@ float ComputerVisionModule::Run()
     for (int i = 0; i < 5; ++i)
     {
         img = captureScreenMat(GetDesktopWindow());
-        cv::imwrite("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png", img);
+        cv::imwrite(baseDir + "\\Screenshots\\screen.png", img);
     }
 
-    img = cv::imread("D:\\SmartCompanion\\SmartCompanion\\Screenshots\\screen.png");
+    img = cv::imread(baseDir + "\\Screenshots\\screen.png");
 
     cv::Mat resizedImg;
     cv::resize(img, resizedImg, cv::Size(640, 359));
@@ -166,15 +166,6 @@ float ComputerVisionModule::Run()
 
     preProcess();
     const auto [x, y] = postProcess();
-
-    /*
-    system("python D:\\SmartCompanion\\SmartCompanion\\Script\\yolov8.py");
-
-    std::ifstream coordsFile("D:\\SmartCompanion\\SmartCompanion\\Script\\coords.txt");
-    int x, y;
-    coordsFile >> x >> y;
-    coordsFile.close();
-    */
 
     //character->DeactivateFirstPersonView();
 

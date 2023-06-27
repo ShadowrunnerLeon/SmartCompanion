@@ -2,10 +2,7 @@
 #include "simpleson/json.h"
 #include <Logging/LogMacros.h>
 
-/**
-@Brief
-simpleson перенёс из ThirdParty из-за ошибок линковки
-**/
+// simpleson перенёс из ThirdParty из-за ошибок линковки
 
 SpeechRecognitionModule::SpeechRecognitionModule()
 {
@@ -18,7 +15,8 @@ SpeechRecognitionModule::SpeechRecognitionModule(UWorld* _worldContext)
 
 void SpeechRecognitionModule::Initialize()
 {
-	model = vosk_model_new("E:\\Vosk\\vosk-model-small-en-us-0.15");
+	std::string path = baseDir + "\\Models\\Vosk\\vosk-model-small-en-us-0.15";
+	model = vosk_model_new(path.c_str());
 	recognizer = vosk_recognizer_new(model, 16000.0);
 
 	PaError err;

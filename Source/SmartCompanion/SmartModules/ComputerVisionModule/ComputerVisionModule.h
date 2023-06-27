@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../ConfigData.h"
 #include "../../../../ThirdParty/OpenCV/include/opencv2/opencv.hpp"
 #include "../ISmartModule.h"
 

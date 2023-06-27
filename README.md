@@ -2,7 +2,6 @@
 
 # Targets
 - check turning and shooting
-- replace absolute paths with relative paths
 - add cross-platform (for now Windows)
 - build shipping
 

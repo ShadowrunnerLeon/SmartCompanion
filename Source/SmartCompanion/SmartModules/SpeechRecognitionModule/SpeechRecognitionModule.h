@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../ConfigData.h"
 #include "../ISmartModule.h"
 
 #pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_static_x64.lib")
