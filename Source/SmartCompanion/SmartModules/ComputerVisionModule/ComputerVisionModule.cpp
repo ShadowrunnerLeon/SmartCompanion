@@ -73,15 +73,16 @@ std::pair<int, int> ComputerVisionModule::postProcess()
     cv::imshow("Detected Enemy", img);
     cv::waitKey(0);
 
-    return { int((left + width) / 2), int((top + height) / 2) };
+    return { int((left + left + width) / 2), int((top + top + height) / 2) };
 }
 
-float ComputerVisionModule::getRotateAngle(int x0, int y0)
+float ComputerVisionModule::getRotateAngle(int x, int y)
 {
-    if (!y0) return 0;
-    float alpha = atan((xLength / 2 - x0) / y0);
-    if (x0 < xLength) alpha *= -1;
-    return alpha / PI;
+    if (y == 359) return 0;
+    float tg = abs(xLength / 2 - x) / (359.0 - y);
+    float alpha = atan(tg) * 180 / PI;
+    alpha = (x > xLength / 2) ? alpha + 90 : alpha;
+    return alpha;
 }
 
 BITMAPINFOHEADER ComputerVisionModule::createBitmapHeader(int width, int height)
@@ -168,8 +169,7 @@ float ComputerVisionModule::Run()
     const auto [x, y] = postProcess();
 
     //character->DeactivateFirstPersonView();
-
-    return (!x && !y) ? 0 : getRotateAngle(x, y);
+    return getRotateAngle(x, y);
 }
 
 void ComputerVisionModule::SetPrimaryModel(const std::string& modelName)

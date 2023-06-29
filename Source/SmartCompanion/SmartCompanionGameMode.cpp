@@ -23,3 +23,8 @@ void ASmartCompanionGameMode::DeactivateCommandHandler()
 {
 	commandHandler->Deactivate();
 }
+
+std::queue<std::function<void()>>& ASmartCompanionGameMode::GetTaskQueue()
+{
+	return taskQueue;
+}

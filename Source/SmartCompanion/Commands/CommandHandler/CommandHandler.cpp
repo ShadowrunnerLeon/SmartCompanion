@@ -55,6 +55,7 @@ uint32 CommandHandler::Run()
 	{
 		if (isActivateSpeechRecognition)
 		{
+			/*
 			auto text = speechRecoginitonModule.Run();
 
 			for (auto& [key, value] : commandStorage)
@@ -66,6 +67,9 @@ uint32 CommandHandler::Run()
 					break;
 				}
 			}
+			*/
+
+			commandStorage["read"]->Run();
 		}
 	}
 

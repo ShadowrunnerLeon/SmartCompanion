@@ -160,6 +160,12 @@ void ASmartCompanionCharacter::MoveRight(float Value)
 void ASmartCompanionCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!((GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().empty()))
+	{
+		((GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().front())();
+		(GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().pop();
+	}
 }
 
 void ASmartCompanionCharacter::ActivateFirstPersonView()
@@ -207,4 +213,10 @@ void ASmartCompanionCharacter::SmartActivate()
 void ASmartCompanionCharacter::SmartDeactivate()
 {
 	(GetWorld()->GetAuthGameMode<ASmartCompanionGameMode>())->DeactivateCommandHandler();
+}
+
+void ASmartCompanionCharacter::RotateOnAngleYaw(float angle)
+{
+	auto controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	controller->SetControlRotation(FRotator(0, angle, 0));
 }

@@ -81,6 +81,8 @@ public:
 	/** Fires a projectile. */
 	void OnPrimaryAction();
 
+	void RotateOnAngleYaw(float angle);
+
 protected:
 	/** Called for forwards/backward input */
 	void MoveForward(float Value);
