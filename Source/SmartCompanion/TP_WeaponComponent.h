@@ -35,6 +35,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void AttachWeapon(ASmartCompanionCharacter* TargetCharacter);
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void GenerateProjectile();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void PlayFireSound();
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void PlayFireAnimation();
+
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();

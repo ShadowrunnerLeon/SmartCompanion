@@ -31,5 +31,12 @@ protected:
 	/** Code for when something overlaps this component */
 	UFUNCTION()
 	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
+
+private:
+	const float SPHERE_RADIUS = 32.f;
+
+private:
+	void RegisterEvent();
+	void UnregisterEvent();
+	void Notify();
 };

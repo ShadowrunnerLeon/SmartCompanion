@@ -34,11 +34,18 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+private:
+	const float LIFETIME_IN_SECONDS = 3.0f;
+	const float SPEED = 3000.f;
+	const float SPHERE_RADIUS = 5.0f;
+
+private:
+	void SetCollisionComp();
+	void SetProjectileMovement();
+	void AddProjectileImpulse();
 };
