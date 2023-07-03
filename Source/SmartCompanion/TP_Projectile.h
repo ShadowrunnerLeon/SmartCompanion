@@ -47,5 +47,5 @@ private:
 private:
 	void SetCollisionComp();
 	void SetProjectileMovement();
-	void AddProjectileImpulse();
+	void AddProjectileImpulse(UPrimitiveComponent* OtherComp);
 };

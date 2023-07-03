@@ -38,5 +38,5 @@ private:
 private:
 	void RegisterEvent();
 	void UnregisterEvent();
-	void Notify();
+	void Notify(ASmartCompanionCharacter* character);
 };

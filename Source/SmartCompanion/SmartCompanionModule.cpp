@@ -8,7 +8,14 @@ void SmartCompanionModule::StartupVosk()
 	const FString LibVoskPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/libvosk.dll"));
 	DynamicLibVoskHandle = FPlatformProcess::GetDllHandle(*LibVoskPath);
 
-	DynamicLibVoskHandle ? UE_LOG(LogTemp, Log, TEXT("libvosk.dll loaded successfully!")) : UE_LOG(LogTemp, Fatal, TEXT("libvosk.dll failed to load!"));
+	if (DynamicLibVoskHandle)
+	{
+		UE_LOG(LogTemp, Log, TEXT("libvosk.dll loaded successfully!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("libvosk.dll failed to load!"));
+	}
 }
 
 void SmartCompanionModule::StatupPortAudio()
@@ -16,7 +23,14 @@ void SmartCompanionModule::StatupPortAudio()
 	const FString LibPortAudioPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/portaudio_x64.dll"));
 	DynamicLibPortAudioHandle = FPlatformProcess::GetDllHandle(*LibPortAudioPath);
 
-	DynamicLibPortAudioHandle ? UE_LOG(LogTemp, Log, TEXT("portaudio_x64.dll loaded successfully!")) : UE_LOG(LogTemp, Fatal, TEXT("portaudio_x64.dll failed to load!"));
+	if (DynamicLibPortAudioHandle)
+	{
+		UE_LOG(LogTemp, Log, TEXT("portaudio_x64.dll loaded successfully!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("portaudio_x64.dll failed to load!"));
+	}
 }
 
 void SmartCompanionModule::StatupOpenCV()
@@ -24,7 +38,14 @@ void SmartCompanionModule::StatupOpenCV()
 	const FString LibOpenCVPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/opencv_world470.dll"));
 	DynamicLibOpenCVHandle = FPlatformProcess::GetDllHandle(*LibOpenCVPath);
 
-	DynamicLibOpenCVHandle ? UE_LOG(LogTemp, Log, TEXT("opencv_world470.dll loaded successfully!")) : UE_LOG(LogTemp, Fatal, TEXT("opencv_world470.dll failed to load!"));
+	if (DynamicLibOpenCVHandle)
+	{
+		UE_LOG(LogTemp, Log, TEXT("opencv_world470.dll loaded successfully!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("opencv_world470.dll failed to load!"));
+	}
 }
 
 void SmartCompanionModule::ShutdownVosk()

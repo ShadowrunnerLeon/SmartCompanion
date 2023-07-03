@@ -18,9 +18,9 @@ void UTP_PickUpComponent::UnregisterEvent()
 	OnComponentBeginOverlap.RemoveAll(this);
 }
 
-void UTP_PickUpComponent::Notify()
+void UTP_PickUpComponent::Notify(ASmartCompanionCharacter* character)
 {
-	OnPickUp.Broadcast(Character);
+	OnPickUp.Broadcast(character);
 }
 
 void UTP_PickUpComponent::BeginPlay()
@@ -32,8 +32,8 @@ void UTP_PickUpComponent::BeginPlay()
 void UTP_PickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// Checking if it is a First Person Character overlapping
-	ASmartCompanionCharacter* Character = Cast<ASmartCompanionCharacter>(OtherActor);
-	if (!Character) return;
-	Notify();
+	ASmartCompanionCharacter* character = Cast<ASmartCompanionCharacter>(OtherActor);
+	if (!character) return;
+	Notify(character);
 	UnregisterEvent();
 }

@@ -121,5 +121,25 @@ public:
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	/** Returns FirstPersonCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCamera; }
+
+private:
+	const float CAPSULE_WIDTH = 42.f;
+	const float CAPSULE_HEIGHT = 96.0f;
+	const float RATE_GAMEPAD = 50.f;
+
+
+private:
+	void SetUseControllerSettings();
+	void SetCharacterMovement();
+	void SetCameraBoom();
+	void SetFollowCamera();
+	void SetFirstPersonCamera();
+
+	void BindAction(class UInputComponent* PlayerInputComponent);
+	void BindAxis(class UInputComponent* PlayerInputComponent);
+	void BindTouch(class UInputComponent* PlayerInputComponent);
+
+	const FRotator GetYawRotationForMoving();
+	void MoveInCalculatedDirection(FRotator rotation, EAxis::Type axis, float value);
 };
 

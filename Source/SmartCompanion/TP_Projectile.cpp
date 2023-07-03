@@ -34,7 +34,7 @@ void ATP_Projectile::SetProjectileMovement()
 	ProjectileMovement->bShouldBounce = true;
 }
 
-void ATP_Projectile::AddProjectileImpulse()
+void ATP_Projectile::AddProjectileImpulse(UPrimitiveComponent* OtherComp)
 {
 	OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 }
@@ -43,7 +43,7 @@ void ATP_Projectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 {
 	if (!OtherActor || (OtherActor == this) || !OtherComp || !(OtherComp->IsSimulatingPhysics())) return;
 	
-	AddProjectileImpulse();
+	AddProjectileImpulse(OtherComp);
 	Destroy();
 }
 
