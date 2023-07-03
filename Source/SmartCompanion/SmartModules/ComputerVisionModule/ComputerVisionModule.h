@@ -17,14 +17,19 @@ class ComputerVisionModule : public ISmartModule
 {
 
 	private:
+		const int rows = 8400;
+
 		cv::Mat img;
 		cv::Mat outputs;
-		const int xLength = 640;
 
-		// postProcess
 		std::vector<float> confidences;
 		std::vector<cv::Rect> boxes;
 		std::vector<int> indices;
+
+		int boxLeft;
+		int boxTop;
+		int boxWidth;
+		int boxHeight;
 
 		std::map<std::string, std::string> nets;
 		std::string primaryModelName;
@@ -32,10 +37,21 @@ class ComputerVisionModule : public ISmartModule
 	private:
 		void				preProcess();
 		std::pair<int, int>	postProcess();
+
+		void EnemyDetection();
+		void NonMaximumSuppression();
+		void DrawBoundingBox();
+		void ClearVectors();
+		void DisplayImage();
+
 		float				getRotateAngle(int x0, int y0);
 
 		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
 		cv::Mat				captureScreenMat(HWND hwnd);
+
+		void ActivateFirstPersonView();
+		void CreateScreen();
+		void ResizeScreen();
 
 	public:
 		ComputerVisionModule();

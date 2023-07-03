@@ -20,7 +20,7 @@ ComputerVisionModule::ComputerVisionModule(UWorld* _worldContext)
 void ComputerVisionModule::preProcess()
 {
 	cv::Mat blob;
-	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
+	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(IMG_WIDTH, IMG_WIDTH), cv::Scalar(), true, false);
 
     auto net = cv::dnn::readNet(nets[primaryModelName]);
     net.setInput(blob);
@@ -29,11 +29,20 @@ void ComputerVisionModule::preProcess()
 
 std::pair<int, int> ComputerVisionModule::postProcess()
 {
-    float xFactor = 1;
-    float yFactor = 359.0 / 640.0;
+    float xFactor = float(IMG_WIDTH) / IMG_HEIGHT;
+    float yFactor = float(IMG_HEIGHT) / IMG_WIDTH;
 
-    const int rows = 8400;
+    EnemyDetection();
+    NonMaximumSuppression();
+    DrawBoundingBox();
+    ClearVectors();
+    DisplayImage();
 
+    return { int((boxLeft + boxLeft + boxWidth) / 2), int((boxTop + boxTop + boxHeight) / 2) };
+}
+
+void ComputerVisionModule::EnemyDetection()
+{
     for (int i = 0; i < rows; ++i)
     {
         float confidence = outputs.at<float>(0, 4, i);
@@ -48,38 +57,45 @@ std::pair<int, int> ComputerVisionModule::postProcess()
 
         confidences.push_back(confidence);
     }
+}
 
-    // non-maximum suppression
+void ComputerVisionModule::NonMaximumSuppression()
+{
     cv::dnn::NMSBoxes(boxes, confidences, 0.25, 0.45, indices, 0.5);
+}
 
+void ComputerVisionModule::DrawBoundingBox()
+{
     if (indices.empty()) return { 0, 0 };
 
     int idx = indices[0];
-    cv::Rect box = boxes[idx];
-    int left = box.x;
-    int top = box.y;
-    int width = box.width;
-    int height = box.height;
+    boundingBox = boxes[idx];
 
-    // draw bounding box.
-    cv::rectangle(img, cv::Point(left, top), cv::Point(left + width, top + height), cv::Scalar(0, 255, 0), 3);
+    boxLeft = box.x;
+    boxTop = box.y;
+    boxWidth = box.width;
+    boxHeight = box.height;
 
-    // clear vectors
+    cv::rectangle(img, cv::Point(boxLeft, boxTop), cv::Point(boxLeft + boxWidth, boxTop + boxHeight), cv::Scalar(0, 255, 0), 3);
+}
+
+void ComputerVisionModule::ClearVectors()
+{
     confidences.clear();
     boxes.clear();
     indices.clear();
+}
 
-    // display image
+void ComputerVisionModule::DisplayImage()
+{
     cv::imshow("Detected Enemy", img);
     cv::waitKey(0);
-
-    return { int((left + left + width) / 2), int((top + top + height) / 2) };
 }
 
 float ComputerVisionModule::getRotateAngle(int x, int y)
 {
-    if (y == 359) return 0;
-    float tg = abs(xLength / 2 - x) / (359.0 - y);
+    if (y == IMG_HEIGHT) return 0;
+    float tg = abs(xLength / 2 - x) / (float(IMG_HEIGHT) - y);
     float alpha = atan(tg) * 180 / PI;
     alpha = (x > xLength / 2) ? alpha + 90 : alpha;
     return alpha;
@@ -149,10 +165,26 @@ void ComputerVisionModule::Initialize()
 
 float ComputerVisionModule::Run()
 {
+    ActivateFirstPersonView();
+    CreateScreen();
+    ResizeScreen();
+
+    preProcess();
+    const auto [x, y] = postProcess();
+    float rotateAngle = getRotateAngle(x, y);
+
+    return rotateAngle;
+}
+
+void ComputerVisionModule::ActivateFirstPersonView()
+{
     auto controller = UGameplayStatics::GetPlayerController(worldContext, 0);
     auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
     character->ActivateFirstPersonView();
+}
 
+void ComputerVisionModule::CreateScreen()
+{
     for (int i = 0; i < 5; ++i)
     {
         img = captureScreenMat(GetDesktopWindow());
@@ -160,16 +192,13 @@ float ComputerVisionModule::Run()
     }
 
     img = cv::imread(baseDir + "\\Screenshots\\screen.png");
+}
 
+void ComputerVisionModule::ResizeScreen()
+{
     cv::Mat resizedImg;
     cv::resize(img, resizedImg, cv::Size(640, 359));
     img = resizedImg;
-
-    preProcess();
-    const auto [x, y] = postProcess();
-
-    //character->DeactivateFirstPersonView();
-    return getRotateAngle(x, y);
 }
 
 void ComputerVisionModule::SetPrimaryModel(const std::string& modelName)
