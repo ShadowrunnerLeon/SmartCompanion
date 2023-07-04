@@ -15,6 +15,7 @@ class SpeechRecognitionModule : public ISmartModule
 		VoskModel* model;
 		VoskRecognizer* recognizer;
 		PaStream* stream;
+		PaStreamParameters inputParametrs;
 
 		char data[SPEECH_BUFFER_SIZE];
 

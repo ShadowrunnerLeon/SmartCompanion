@@ -41,7 +41,6 @@ void SpeechRecognitionModule::InitializePortAudio()
 
 void SpeechRecognitionModule::SetAudioDevice()
 {
-	PaStreamParameters inputParametrs;
 	inputParametrs.channelCount = 1;
 	inputParametrs.sampleFormat = paInt16;
 	inputParametrs.hostApiSpecificStreamInfo = nullptr;
@@ -87,7 +86,7 @@ void SpeechRecognitionModule::ReadDataFromStream()
 	if (err != paNoError && err != paInputOverflowed)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pa_ReadStream: "), Pa_GetErrorText(err));
-		return nullptr;
+		return;
 	}
 }
 

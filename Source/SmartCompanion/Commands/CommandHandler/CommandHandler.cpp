@@ -17,7 +17,7 @@ CommandHandler::CommandHandler()
 CommandHandler::CommandHandler(UWorld* _worldContext) :
 	worldContext(_worldContext),
 	speechRecoginitonModule(_worldContext),
-	computerVisionModule(_worldContext)
+	computerVisionModule(_worldContext, ScreenCreater::ScreenCreaterFabric(WINDOWS))
 {
 	isActivateSpeechRecognition = false;
 	thread = FRunnableThread::Create(this, TEXT("CommandHandlerThread"));

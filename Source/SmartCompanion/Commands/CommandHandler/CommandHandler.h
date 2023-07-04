@@ -5,6 +5,7 @@
 #include "../ICommand.h"
 #include "../../SmartModules/SpeechRecognitionModule/SpeechRecognitionModule.h"
 #include "../../SmartModules/ComputerVisionModule/ComputerVisionModule.h"
+#include "../../SmartModules/ComputerVisionModule/ScreenCreater/ScreenCreater.h"
 
 #include <map>
 #include <string>
