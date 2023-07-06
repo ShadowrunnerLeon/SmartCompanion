@@ -40,6 +40,8 @@ bool CommandHandler::Init()
 {
 	UE_LOG(LogTemp, Display, TEXT("CommandHandler initialize"));
 
+	// red and read - homophones
+	commandStorage["red"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["read"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["blue"] = std::shared_ptr<ICommand>(new KillBlue(&computerVisionModule));
 

@@ -31,7 +31,6 @@ void UTP_PickUpComponent::BeginPlay()
 
 void UTP_PickUpComponent::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// Checking if it is a First Person Character overlapping
 	ASmartCompanionCharacter* character = Cast<ASmartCompanionCharacter>(OtherActor);
 	if (!character) return;
 	Notify(character);

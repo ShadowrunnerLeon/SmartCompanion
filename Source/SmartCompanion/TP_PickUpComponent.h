@@ -16,27 +16,23 @@ class SMARTCOMPANION_API UTP_PickUpComponent : public USphereComponent
 {
 	GENERATED_BODY()
 
-public:
+	public:
+		UPROPERTY(BlueprintAssignable, Category = "Interaction")
+		FOnPickUp OnPickUp;
 
-	/** Delegate to whom anyone can subscribe to receive this event */
-	UPROPERTY(BlueprintAssignable, Category = "Interaction")
-	FOnPickUp OnPickUp;
+		UTP_PickUpComponent();
 
-	UTP_PickUpComponent();
-protected:
+	protected:
+		virtual void BeginPlay() override;
 
-	/** Called when the game starts */
-	virtual void BeginPlay() override;
+		UFUNCTION()
+		void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	/** Code for when something overlaps this component */
-	UFUNCTION()
-	void OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	private:
+		const float SPHERE_RADIUS = 32.f;
 
-private:
-	const float SPHERE_RADIUS = 32.f;
-
-private:
-	void RegisterEvent();
-	void UnregisterEvent();
-	void Notify(ASmartCompanionCharacter* character);
+	private:
+		void RegisterEvent();
+		void UnregisterEvent();
+		void Notify(ASmartCompanionCharacter* character);
 };

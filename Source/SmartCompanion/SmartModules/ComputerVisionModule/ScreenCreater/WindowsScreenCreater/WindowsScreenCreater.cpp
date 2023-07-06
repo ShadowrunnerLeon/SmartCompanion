@@ -45,7 +45,7 @@ void WindowsScreenCreater::CreateBitmapHeader()
 {
     bi.biSize = sizeof(BITMAPINFOHEADER);
     bi.biWidth = width;
-    bi.biHeight = -height;  //this is the line that makes it draw upside down or not
+    bi.biHeight = -height;
     bi.biPlanes = 1;
     bi.biBitCount = 32;
     bi.biCompression = BI_RGB;

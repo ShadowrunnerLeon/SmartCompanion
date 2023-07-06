@@ -2,8 +2,6 @@
 #include "simpleson/json.h"
 #include <Logging/LogMacros.h>
 
-// simpleson ������� �� ThirdParty ��-�� ������ ��������
-
 SpeechRecognitionModule::SpeechRecognitionModule()
 {
 }
