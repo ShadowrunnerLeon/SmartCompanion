@@ -12,12 +12,22 @@
 class SpeechRecognitionModule : public ISmartModule
 {
 	private:
-		/** speech recognition vars **/
 		VoskModel* model;
 		VoskRecognizer* recognizer;
 		PaStream* stream;
+		PaStreamParameters inputParametrs;
 
-		char data[4096];
+		char data[SPEECH_BUFFER_SIZE];
+
+	private:
+		void InializeModelAndRecognizer();
+		void InitializePortAudio();
+		void SetAudioDevice();
+		void OpenStream();
+		void StartStream();
+		
+		void ReadDataFromStream();
+		std::string Recognize();
 
 	public:
 		SpeechRecognitionModule();

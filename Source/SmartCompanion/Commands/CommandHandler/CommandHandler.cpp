@@ -40,12 +40,14 @@ bool CommandHandler::Init()
 {
 	UE_LOG(LogTemp, Display, TEXT("CommandHandler initialize"));
 
+	commandStorage["red"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["read"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["blue"] = std::shared_ptr<ICommand>(new KillBlue(&computerVisionModule));
 
 	speechRecoginitonModule.Initialize();
 	computerVisionModule.Initialize();
 
+	bRunThread = true;
 	return true;
 }
 
@@ -55,20 +57,7 @@ uint32 CommandHandler::Run()
 	{
 		if (isActivateSpeechRecognition)
 		{
-			/*
-			auto text = speechRecoginitonModule.Run();
-
-			for (auto& [key, value] : commandStorage)
-			{
-				auto pos = text.find(key);
-				if (pos != std::string::npos)
-				{
-					value->Run();
-					break;
-				}
-			}
-			*/
-
+			//FindCommand();
 			commandStorage["read"]->Run();
 		}
 	}
@@ -79,6 +68,21 @@ uint32 CommandHandler::Run()
 void CommandHandler::Stop()
 {
 	bRunThread = false;
+}
+
+void CommandHandler::FindCommand()
+{
+	auto text = speechRecoginitonModule.Run();
+
+	for (auto& [key, value] : commandStorage)
+	{
+		auto pos = text.find(key);
+		if (pos != std::string::npos)
+		{
+			value->Run();
+			break;
+		}
+	}
 }
 
 void CommandHandler::Activate()

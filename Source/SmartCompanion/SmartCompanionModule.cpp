@@ -3,17 +3,10 @@
 #include "SmartCompanionModule.h"
 #include "Modules/ModuleManager.h"
 
-void SmartCompanionModule::StartupModule()
+void SmartCompanionModule::StartupVosk()
 {
-	const FString BasePluginDir = "D:/SmartCompanion/SmartCompanion";
-
 	const FString LibVoskPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/libvosk.dll"));
-	const FString LibPortAudioPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/portaudio_x64.dll"));
-	const FString LibOpenCVPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/opencv_world470.dll"));
-
 	DynamicLibVoskHandle = FPlatformProcess::GetDllHandle(*LibVoskPath);
-	DynamicLibPortAudioHandle = FPlatformProcess::GetDllHandle(*LibPortAudioPath);
-	DynamicLibOpenCVHandle = FPlatformProcess::GetDllHandle(*LibOpenCVPath);
 
 	if (DynamicLibVoskHandle)
 	{
@@ -23,6 +16,12 @@ void SmartCompanionModule::StartupModule()
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("libvosk.dll failed to load!"));
 	}
+}
+
+void SmartCompanionModule::StatupPortAudio()
+{
+	const FString LibPortAudioPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/portaudio_x64.dll"));
+	DynamicLibPortAudioHandle = FPlatformProcess::GetDllHandle(*LibPortAudioPath);
 
 	if (DynamicLibPortAudioHandle)
 	{
@@ -32,6 +31,12 @@ void SmartCompanionModule::StartupModule()
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("portaudio_x64.dll failed to load!"));
 	}
+}
+
+void SmartCompanionModule::StatupOpenCV()
+{
+	const FString LibOpenCVPath = FPaths::Combine(*BasePluginDir, TEXT("Binaries/Win64/opencv_world470.dll"));
+	DynamicLibOpenCVHandle = FPlatformProcess::GetDllHandle(*LibOpenCVPath);
 
 	if (DynamicLibOpenCVHandle)
 	{
@@ -43,16 +48,36 @@ void SmartCompanionModule::StartupModule()
 	}
 }
 
-void SmartCompanionModule::ShutdownModule()
+void SmartCompanionModule::ShutdownVosk()
 {
 	FPlatformProcess::FreeDllHandle(DynamicLibVoskHandle);
 	DynamicLibVoskHandle = nullptr;
+}
 
+void SmartCompanionModule::ShutdownPortAudio()
+{
 	FPlatformProcess::FreeDllHandle(DynamicLibPortAudioHandle);
 	DynamicLibPortAudioHandle = nullptr;
+}
 
+void SmartCompanionModule::ShutdownOpenCV()
+{
 	FPlatformProcess::FreeDllHandle(DynamicLibOpenCVHandle);
 	DynamicLibOpenCVHandle = nullptr;
+}
+
+void SmartCompanionModule::StartupModule()
+{
+	StartupVosk();
+	StatupPortAudio();
+	StatupOpenCV();
+}
+
+void SmartCompanionModule::ShutdownModule()
+{
+	ShutdownVosk();
+	ShutdownPortAudio();
+	ShutdownOpenCV();
 }
 
 IMPLEMENT_PRIMARY_GAME_MODULE(SmartCompanionModule, SmartCompanion, "SmartCompanion" );

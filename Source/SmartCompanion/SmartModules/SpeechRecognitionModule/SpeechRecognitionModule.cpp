@@ -2,8 +2,6 @@
 #include "simpleson/json.h"
 #include <Logging/LogMacros.h>
 
-// simpleson перенёс из ThirdParty из-за ошибок линковки
-
 SpeechRecognitionModule::SpeechRecognitionModule()
 {
 }
@@ -15,21 +13,32 @@ SpeechRecognitionModule::SpeechRecognitionModule(UWorld* _worldContext)
 
 void SpeechRecognitionModule::Initialize()
 {
+	InializeModelAndRecognizer();
+	InitializePortAudio();
+	SetAudioDevice();
+	OpenStream();
+	StartStream();
+}
+
+void SpeechRecognitionModule::InializeModelAndRecognizer()
+{
 	std::string path = baseDir + "\\Models\\Vosk\\vosk-model-small-en-us-0.15";
 	model = vosk_model_new(path.c_str());
 	recognizer = vosk_recognizer_new(model, 16000.0);
+}
 
-	PaError err;
-
-	err = Pa_Initialize();
+void SpeechRecognitionModule::InitializePortAudio()
+{
+	PaError err = Pa_Initialize();
 	if (Pa_Initialize() != paNoError)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pa_Initialize: "), Pa_GetErrorText(err));
 		return;
 	}
+}
 
-	// get device info
-	PaStreamParameters inputParametrs;
+void SpeechRecognitionModule::SetAudioDevice()
+{
 	inputParametrs.channelCount = 1;
 	inputParametrs.sampleFormat = paInt16;
 	inputParametrs.hostApiSpecificStreamInfo = nullptr;
@@ -40,17 +49,21 @@ void SpeechRecognitionModule::Initialize()
 		UE_LOG(LogTemp, Display, TEXT("Pa_GetDefaultInputDevice: no device"));
 		return;
 	}
+}
 
-	// open stream
-	err = Pa_OpenStream(&stream, &inputParametrs, nullptr, 16000.0, 8192, 0, nullptr, nullptr);
+void SpeechRecognitionModule::OpenStream()
+{
+	PaError err = Pa_OpenStream(&stream, &inputParametrs, nullptr, 16000.0, 8192, 0, nullptr, nullptr);
 	if (err != paNoError)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pa_OpenStream: "), Pa_GetErrorText(err));
 		return;
 	}
+}
 
-	// start stream
-	err = Pa_StartStream(stream);
+void SpeechRecognitionModule::StartStream()
+{
+	PaError err = Pa_StartStream(stream);
 	if (err != paNoError)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pa_StartStream: "), Pa_GetErrorText(err));
@@ -60,15 +73,23 @@ void SpeechRecognitionModule::Initialize()
 
 std::string SpeechRecognitionModule::Run()
 {
-	PaError err;
+	ReadDataFromStream();
+	std::string recognizedText = Recognize();
+	return recognizedText;
+}
 
-	err = Pa_ReadStream(stream, (void*)data, 2048);
+void SpeechRecognitionModule::ReadDataFromStream()
+{
+	PaError err = Pa_ReadStream(stream, (void*)data, SPEECH_BUFFER_SIZE / 2);
 	if (err != paNoError && err != paInputOverflowed)
 	{
 		UE_LOG(LogTemp, Display, TEXT("Pa_ReadStream: "), Pa_GetErrorText(err));
-		return nullptr;
+		return;
 	}
+}
 
+std::string SpeechRecognitionModule::Recognize()
+{
 	if (vosk_recognizer_accept_waveform(recognizer, data, sizeof(data)) == -1)
 	{
 		UE_LOG(LogTemp, Display, TEXT("vosk_recognizer_accept_waveform: error"));
@@ -79,7 +100,6 @@ std::string SpeechRecognitionModule::Run()
 	auto resJSON = json::jobject::parse(resRegonition);
 
 	FString textFString(resJSON.get("text").c_str());
-
 	UE_LOG(LogTemp, Display, TEXT("TEXT: %s"), *textFString);
 
 	return resJSON.get("text");

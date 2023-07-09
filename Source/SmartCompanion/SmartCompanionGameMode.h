@@ -19,7 +19,7 @@ class ASmartCompanionGameMode : public AGameModeBase
 
 	private:
 		std::queue<std::function<void()>> taskQueue;
-		TSharedPtr<CommandHandler> commandHandler = MakeShared<CommandHandler>(GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull));
+		TSharedPtr<CommandHandler> commandHandler;
 
 	public:
 		ASmartCompanionGameMode();

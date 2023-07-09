@@ -35,7 +35,6 @@ class ComputerVisionModule : public ISmartModule
 		float				getRotateAngle(int x0, int y0);
 
 		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
-		cv::Mat				captureScreenMat(HWND hwnd);
 
 	public:
 		ComputerVisionModule();
@@ -48,4 +47,6 @@ class ComputerVisionModule : public ISmartModule
 
 		void SetPrimaryModel(const std::string& modelName);
 		UWorld* GetWorldContext();
+
+		cv::Mat				captureScreenMat(HWND hwnd);
 };
