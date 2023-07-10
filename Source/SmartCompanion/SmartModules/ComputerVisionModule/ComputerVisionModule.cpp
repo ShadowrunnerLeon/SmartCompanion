@@ -12,22 +12,23 @@ ComputerVisionModule::ComputerVisionModule()
 {
 }
 
-ComputerVisionModule::ComputerVisionModule(UWorld* _worldContext)
+ComputerVisionModule::ComputerVisionModule(UWorld* _worldContext, ScreenCreater* _screenCreater)
 {
     worldContext = _worldContext;
+    screenCreater = _screenCreater;
 }
 
-void ComputerVisionModule::preProcess()
+void ComputerVisionModule::PreProcess()
 {
 	cv::Mat blob;
-	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
+	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(IMG_WIDTH, IMG_WIDTH), cv::Scalar(), true, false);
 
     auto net = cv::dnn::readNet(nets[primaryModelName]);
     net.setInput(blob);
     outputs = net.forward();
 }
 
-std::pair<int, int> ComputerVisionModule::postProcess()
+std::pair<int, int> ComputerVisionModule::PostProcess()
 {
     EnemyDetection();
     NMS();
@@ -99,69 +100,13 @@ void ComputerVisionModule::DisplayImage()
     cv::waitKey(0);
 }
 
-float ComputerVisionModule::getRotateAngle(int x, int y)
+float ComputerVisionModule::GetRotateAngle(int x, int y)
 {
     if (y == IMG_HEIGHT) return 0;
     float tg = abs(IMG_WIDTH / 2 - x) / (IMG_HEIGHT - y);
     float alpha = atan(tg) * 180 / PI;
     alpha = (x > IMG_WIDTH / 2) ? alpha + 90 : alpha;
     return alpha;
-}
-
-BITMAPINFOHEADER ComputerVisionModule::createBitmapHeader(int width, int height)
-{
-    BITMAPINFOHEADER  bi;
-
-    // create a bitmap
-    bi.biSize = sizeof(BITMAPINFOHEADER);
-    bi.biWidth = width;
-    bi.biHeight = -height;  //this is the line that makes it draw upside down or not
-    bi.biPlanes = 1;
-    bi.biBitCount = 32;
-    bi.biCompression = BI_RGB;
-    bi.biSizeImage = 0;
-    bi.biXPelsPerMeter = 0;
-    bi.biYPelsPerMeter = 0;
-    bi.biClrUsed = 0;
-    bi.biClrImportant = 0;
-
-    return bi;
-}
-
-cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
-{
-    cv::Mat src;
-
-    // get handles to a device context (DC)
-    HDC hwindowDC = GetDC(hwnd);
-    HDC hwindowCompatibleDC = CreateCompatibleDC(hwindowDC);
-    SetStretchBltMode(hwindowCompatibleDC, COLORONCOLOR);
-
-    // define scale, height and width
-    int screenx = GetSystemMetrics(SM_XVIRTUALSCREEN);
-    int screeny = GetSystemMetrics(SM_YVIRTUALSCREEN);
-    int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-
-    // create mat object
-    src.create(height, width, CV_8UC4);
-
-    // create a bitmap
-    HBITMAP hbwindow = CreateCompatibleBitmap(hwindowDC, width, height);
-    BITMAPINFOHEADER bi = createBitmapHeader(width, height);
-
-    // use the previously created device context with the bitmap
-    SelectObject(hwindowCompatibleDC, hbwindow);
-
-    // copy from the window device context to the bitmap device context
-    StretchBlt(hwindowCompatibleDC, 0, 0, width, height, hwindowDC, screenx, screeny, width, height, SRCCOPY);
-    GetDIBits(hwindowCompatibleDC, hbwindow, 0, height, src.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
-
-    DeleteObject(hbwindow);
-    DeleteDC(hwindowCompatibleDC);
-    ReleaseDC(hwnd, hwindowDC);
-
-    return src;
 }
 
 void ComputerVisionModule::Initialize()
@@ -171,6 +116,19 @@ void ComputerVisionModule::Initialize()
 }
 
 float ComputerVisionModule::Run()
+{
+    ActivateFirstPersonView();
+    CreateScreen();
+    ResizeScreen();
+
+    PreProcess();
+    const auto [x, y] = PostProcess();
+    float rotateAngle = GetRotateAngle(x, y);
+
+    return rotateAngle;
+}
+
+void ComputerVisionModule::ActivateFirstPersonView()
 {
     ActivateFirstPersonView();
     CreateScreen();
@@ -194,7 +152,7 @@ void ComputerVisionModule::CreateScreen()
 {
     for (int i = 0; i < 5; ++i)
     {
-        img = captureScreenMat(GetDesktopWindow());
+        img = screenCreater->Run();
         cv::imwrite(baseDir + "\\Screenshots\\screen.png", img);
     }
 

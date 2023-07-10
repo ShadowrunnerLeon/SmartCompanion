@@ -1,7 +1,6 @@
 ## Work in progress (speech recognition and image processing works)
 
 # Targets
-- check turning and shooting
 - add cross-platform (for now Windows)
 - build shipping
 

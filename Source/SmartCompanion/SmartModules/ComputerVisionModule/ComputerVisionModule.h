@@ -3,15 +3,10 @@
 #include "../../ConfigData.h"
 #include "../../../../ThirdParty/OpenCV/include/opencv2/opencv.hpp"
 #include "../ISmartModule.h"
+#include "ScreenCreater/ScreenCreater.h"
 
 #include <map>
 #include <string>
-
-#include "Windows/AllowWindowsPlatformTypes.h"
-#include <windows.h>
-#include "Windows/HideWindowsPlatformTypes.h"
-
-//#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
 
 class ComputerVisionModule : public ISmartModule
 {
@@ -31,13 +26,25 @@ class ComputerVisionModule : public ISmartModule
 		std::vector<cv::Rect> boxes;
 		std::vector<int> indices;
 
+		int boxLeft;
+		int boxTop;
+		int boxWidth;
+		int boxHeight;
+
 		std::map<std::string, std::string> nets;
 		std::string primaryModelName;
 
 	private:
-		void				preProcess();
-		std::pair<int, int>	postProcess();
-		float				getRotateAngle(int x0, int y0);
+		void				PreProcess();
+		std::pair<int, int>	PostProcess();
+
+		void EnemyDetection();
+		void NonMaximumSuppression();
+		void DrawBoundingBox();
+		void ClearVectors();
+		void DisplayImage();
+
+		float GetRotateAngle(int x0, int y0);
 
 		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
 
@@ -52,7 +59,7 @@ class ComputerVisionModule : public ISmartModule
 
 	public:
 		ComputerVisionModule();
-		ComputerVisionModule(UWorld* _worldContext);
+		ComputerVisionModule(UWorld* _worldContext, ScreenCreater* _screenCreater);
 
 		void	Initialize()	override;
 		void	Shutdown()		override;
