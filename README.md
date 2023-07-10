@@ -1,5 +1,3 @@
-## Work in progress (speech recognition and image processing works)
-
 # Targets
 - add cross-platform (for now Windows)
 - build shipping
@@ -18,8 +16,6 @@ This project is an example of a game system using voice recognition modules and 
 - CommandHandler is a class that implements the FRunnable interface and handles recognized commands. 
 - SpeechRecognitionModule - reading data from the microphone, recognizing and parsing json.
 - ComputerVisionModule - image preprocessing and postprocessing, rotation angle calculation.
-
-![Image alt](https://github.com/ShadowrunnerLeon/SmartCompanion/raw/main/Screenshots/architecture.png)
 
 # Models
 - vosk-model-small-en-us-0.15
