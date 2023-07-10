@@ -17,7 +17,7 @@ CommandHandler::CommandHandler()
 CommandHandler::CommandHandler(UWorld* _worldContext) :
 	worldContext(_worldContext),
 	speechRecoginitonModule(_worldContext),
-	computerVisionModule(_worldContext, ScreenCreater::ScreenCreaterFabric(WINDOWS))
+	computerVisionModule(_worldContext)
 {
 	isActivateSpeechRecognition = false;
 	thread = FRunnableThread::Create(this, TEXT("CommandHandlerThread"));
@@ -40,7 +40,6 @@ bool CommandHandler::Init()
 {
 	UE_LOG(LogTemp, Display, TEXT("CommandHandler initialize"));
 
-	// red and read - homophones
 	commandStorage["red"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["read"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
 	commandStorage["blue"] = std::shared_ptr<ICommand>(new KillBlue(&computerVisionModule));
@@ -58,7 +57,8 @@ uint32 CommandHandler::Run()
 	{
 		if (isActivateSpeechRecognition)
 		{
-			FindCommand();
+			//FindCommand();
+			commandStorage["read"]->Run();
 		}
 	}
 

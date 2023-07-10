@@ -25,12 +25,15 @@ class ASmartCompanionCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 
+	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+	/** First Person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCamera;
 
@@ -42,72 +45,81 @@ class ASmartCompanionCharacter : public ACharacter
 
 	bool SmartStatusFlag = false;
 
-	public:
-		ASmartCompanionCharacter();
-		~ASmartCompanionCharacter();
+public:
+	ASmartCompanionCharacter();
+	~ASmartCompanionCharacter();
 
-		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
-		float TurnRateGamepad;
+	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
+	float TurnRateGamepad;
 
-		UPROPERTY(BlueprintAssignable, Category = "Interaction")
-		FOnUseItem OnUseItem;
+	/** Delegate to whom anyone can subscribe to receive this event */
+	UPROPERTY(BlueprintAssignable, Category = "Interaction")
+	FOnUseItem OnUseItem;
 
-		UFUNCTION(BlueprintCallable)
-		bool GetBattleStateFlag();
+	UFUNCTION(BlueprintCallable)
+	bool GetBattleStateFlag();
 
-		UFUNCTION(BlueprintCallable)
-		void SetBattleStateFlag(bool val);
+	UFUNCTION(BlueprintCallable)
+	void SetBattleStateFlag(bool val);
 
-		UFUNCTION(BlueprintCallable)
-		bool GetStealthStateFlag();
+	UFUNCTION(BlueprintCallable)
+	bool GetStealthStateFlag();
 
-		UFUNCTION(BlueprintCallable)
-		void StealthActivate();
+	UFUNCTION(BlueprintCallable)
+	void StealthActivate();
 
-		UFUNCTION(BlueprintCallable)
-		void StealthDeactivate();
+	UFUNCTION(BlueprintCallable)
+	void StealthDeactivate();
 
-		void SmartActivate();
-		void SmartDeactivate();
+	void SmartActivate();
+	void SmartDeactivate();
 
-		void ActivateFirstPersonView();
-		void DeactivateFirstPersonView();
+	void ActivateFirstPersonView();
+	void DeactivateFirstPersonView();
 
-		/** Fires a projectile. */
-		void OnPrimaryAction();
+	/** Fires a projectile. */
+	void OnPrimaryAction();
 
-		void RotateOnAngleYaw(float angle);
+	void RotateOnAngleYaw(float angle);
 
-	protected:
-		void MoveForward(float Value);
-		void MoveRight(float Value);
-		void TurnAtRate(float Rate);
-		void LookUpAtRate(float Rate);
+protected:
+	/** Called for forwards/backward input */
+	void MoveForward(float Value);
 
-		void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
-		void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
+	/** Called for side to side input */
+	void MoveRight(float Value);
 
-		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	/** 
+	 * Called via input to turn at a given rate. 
+	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
+	 */
+	void TurnAtRate(float Rate);
 
-		void Tick(float DeltaTime);
+	/**
+	 * Called via input to turn look up/down at a given rate. 
+	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
+	 */
+	void LookUpAtRate(float Rate);
 
-	public:
-		FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-		FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-		FORCEINLINE class UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCamera; }
+	/** Handler for when a touch input begins. */
+	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
 
-	private:
-		void SetUseControllerSettings();
-		void SetCharacterMovement();
-		void SetCameraBoom();
-		void SetFollowCamera();
-		void SetFirstPersonCamera();
+	/** Handler for when a touch input stops. */
+	void TouchStopped(ETouchIndex::Type FingerIndex, FVector Location);
 
-		void BindAction(class UInputComponent* PlayerInputComponent);
-		void BindAxis(class UInputComponent* PlayerInputComponent);
-		void BindTouch(class UInputComponent* PlayerInputComponent);
+	// APawn interface
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	// End of APawn interface
 
-		const FRotator GetYawRotationForMoving();
-		void MoveInCalculatedDirection(FRotator rotation, EAxis::Type axis, float value);
+	void Tick(float DeltaTime);
+
+public:
+	/** Returns CameraBoom subobject **/
+	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	/** Returns FollowCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	/** Returns FirstPersonCamera subobject **/
+	FORCEINLINE class UCameraComponent* GetFirstPersonCamera() const { return FirstPersonCamera; }
 };
 
