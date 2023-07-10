@@ -11,6 +11,10 @@
 #include <string>
 #include <memory>
 
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
 class CommandHandler : public FRunnable
 {
 	public:
@@ -22,6 +26,8 @@ class CommandHandler : public FRunnable
 		uint32 Run() override;
 		void Stop() override;
 
+		void FindCommand();
+
 		void Activate();
 		void Deactivate();
 
@@ -29,6 +35,8 @@ class CommandHandler : public FRunnable
 		FRunnableThread* thread;
 		bool bRunThread;
 
+		std::mutex mtx;
+		std::condition_variable cond;
 		bool isActivateSpeechRecognition;
 
 		std::map<std::string, std::shared_ptr<ICommand>> commandStorage;

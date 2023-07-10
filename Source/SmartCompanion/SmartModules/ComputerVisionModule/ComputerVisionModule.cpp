@@ -31,8 +31,8 @@ void ComputerVisionModule::PreProcess()
 std::pair<int, int> ComputerVisionModule::PostProcess()
 {
     EnemyDetection();
-    NonMaximumSuppression();
-    DrawBoundingBox();
+    NMS();
+    DrawRectangle();
     ClearVectors();
     DisplayImage();
 
@@ -41,8 +41,8 @@ std::pair<int, int> ComputerVisionModule::PostProcess()
 
 void ComputerVisionModule::EnemyDetection()
 {
-    float xFactor = float(IMG_WIDTH) / IMG_HEIGHT;
-    float yFactor = float(IMG_HEIGHT) / IMG_WIDTH;
+    float xFactor = IMG_WIDTH / IMG_WIDTH;
+    float yFactor = IMG_HEIGHT / IMG_WIDTH;
 
     for (int i = 0; i < rows; ++i)
     {
@@ -60,12 +60,12 @@ void ComputerVisionModule::EnemyDetection()
     }
 }
 
-void ComputerVisionModule::NonMaximumSuppression()
+void ComputerVisionModule::NMS()
 {
     cv::dnn::NMSBoxes(boxes, confidences, 0.25, 0.45, indices, 0.5);
 }
 
-void ComputerVisionModule::DrawBoundingBox()
+void ComputerVisionModule::DrawRectangle()
 {
     if (indices.empty())
     {
@@ -78,12 +78,11 @@ void ComputerVisionModule::DrawBoundingBox()
     }
 
     int idx = indices[0];
-    cv::Rect boundingBox = boxes[idx];
-
-    boxLeft = boundingBox.x;
-    boxTop = boundingBox.y;
-    boxWidth = boundingBox.width;
-    boxHeight = boundingBox.height;
+    cv::Rect box = boxes[idx];
+    boxLeft = box.x;
+    boxTop = box.y;
+    boxWidth = box.width;
+    boxHeight = box.height;
 
     cv::rectangle(img, cv::Point(boxLeft, boxTop), cv::Point(boxLeft + boxWidth, boxTop + boxHeight), cv::Scalar(0, 255, 0), 3);
 }
@@ -104,7 +103,7 @@ void ComputerVisionModule::DisplayImage()
 float ComputerVisionModule::GetRotateAngle(int x, int y)
 {
     if (y == IMG_HEIGHT) return 0;
-    float tg = abs(IMG_WIDTH / 2 - x) / (float(IMG_HEIGHT) - y);
+    float tg = abs(IMG_WIDTH / 2 - x) / (IMG_HEIGHT - y);
     float alpha = atan(tg) * 180 / PI;
     alpha = (x > IMG_WIDTH / 2) ? alpha + 90 : alpha;
     return alpha;
@@ -131,6 +130,19 @@ float ComputerVisionModule::Run()
 
 void ComputerVisionModule::ActivateFirstPersonView()
 {
+    ActivateFirstPersonView();
+    CreateScreen();
+    ResizeImage();
+
+    preProcess();
+    const auto [x, y] = postProcess();
+
+    //character->DeactivateFirstPersonView();
+    return getRotateAngle(x, y);
+}
+
+void ComputerVisionModule::ActivateFirstPersonView()
+{
     auto controller = UGameplayStatics::GetPlayerController(worldContext, 0);
     auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
     character->ActivateFirstPersonView();
@@ -147,7 +159,7 @@ void ComputerVisionModule::CreateScreen()
     img = cv::imread(baseDir + "\\Screenshots\\screen.png");
 }
 
-void ComputerVisionModule::ResizeScreen()
+void ComputerVisionModule::ResizeImage()
 {
     cv::Mat resizedImg;
     cv::resize(img, resizedImg, cv::Size(640, 359));

@@ -8,15 +8,16 @@
 #include <map>
 #include <string>
 
-//#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
-
 class ComputerVisionModule : public ISmartModule
 {
 
 	private:
 		const int rows = 8400;
 
-		ScreenCreater* screenCreater;
+		int boxLeft;
+		int boxTop;
+		int boxWidth;
+		int boxHeight;
 
 		cv::Mat img;
 		cv::Mat outputs;
@@ -45,9 +46,16 @@ class ComputerVisionModule : public ISmartModule
 
 		float GetRotateAngle(int x0, int y0);
 
+		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
+
 		void ActivateFirstPersonView();
 		void CreateScreen();
-		void ResizeScreen();
+		void ResizeImage();
+		void EnemyDetection();
+		void NMS();
+		void DrawRectangle();
+		void ClearVectors();
+		void DisplayImage();
 
 	public:
 		ComputerVisionModule();
@@ -60,4 +68,6 @@ class ComputerVisionModule : public ISmartModule
 
 		void SetPrimaryModel(const std::string& modelName);
 		UWorld* GetWorldContext();
+
+		cv::Mat				captureScreenMat(HWND hwnd);
 };

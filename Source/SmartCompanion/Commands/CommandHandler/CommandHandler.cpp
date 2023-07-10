@@ -48,6 +48,7 @@ bool CommandHandler::Init()
 	speechRecoginitonModule.Initialize();
 	computerVisionModule.Initialize();
 
+	bRunThread = true;
 	return true;
 }
 
@@ -57,17 +58,7 @@ uint32 CommandHandler::Run()
 	{
 		if (isActivateSpeechRecognition)
 		{
-			auto text = speechRecoginitonModule.Run();
-
-			for (auto& [key, value] : commandStorage)
-			{
-				auto pos = text.find(key);
-				if (pos != std::string::npos)
-				{
-					value->Run();
-					break;
-				}
-			}
+			FindCommand();
 		}
 	}
 
@@ -77,6 +68,21 @@ uint32 CommandHandler::Run()
 void CommandHandler::Stop()
 {
 	bRunThread = false;
+}
+
+void CommandHandler::FindCommand()
+{
+	auto text = speechRecoginitonModule.Run();
+
+	for (auto& [key, value] : commandStorage)
+	{
+		auto pos = text.find(key);
+		if (pos != std::string::npos)
+		{
+			value->Run();
+			break;
+		}
+	}
 }
 
 void CommandHandler::Activate()

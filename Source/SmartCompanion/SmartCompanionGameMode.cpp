@@ -9,6 +9,7 @@ ASmartCompanionGameMode::ASmartCompanionGameMode()
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
 	if (!PlayerPawnBPClass.Class) return;
 	DefaultPawnClass = PlayerPawnBPClass.Class;
+	commandHandler = MakeShared<CommandHandler>(GEngine->GetWorldFromContextObject(this, EGetWorldErrorMode::LogAndReturnNull));
 }
 
 void ASmartCompanionGameMode::ActivateCommandHandler()
