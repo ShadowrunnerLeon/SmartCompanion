@@ -17,11 +17,16 @@ class ComputerVisionModule : public ISmartModule
 {
 
 	private:
+		const int rows = 8400;
+
+		int boxLeft;
+		int boxTop;
+		int boxWidth;
+		int boxHeight;
+
 		cv::Mat img;
 		cv::Mat outputs;
-		const int xLength = 640;
 
-		// postProcess
 		std::vector<float> confidences;
 		std::vector<cv::Rect> boxes;
 		std::vector<int> indices;
@@ -35,6 +40,15 @@ class ComputerVisionModule : public ISmartModule
 		float				getRotateAngle(int x0, int y0);
 
 		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
+
+		void ActivateFirstPersonView();
+		void CreateScreen();
+		void ResizeImage();
+		void EnemyDetection();
+		void NMS();
+		void DrawRectangle();
+		void ClearVectors();
+		void DisplayImage();
 
 	public:
 		ComputerVisionModule();
