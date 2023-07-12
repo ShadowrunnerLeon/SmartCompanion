@@ -114,6 +114,17 @@ protected:
 
 	void Tick(float DeltaTime);
 
+private:
+	void SetFlags();
+	void SetCharacterMovement();
+	void SetCameraBoom();
+	void SetFollowCamera();
+	void SetFirstPersonCamera();
+
+	void BindAction(class UInputComponent* PlayerInputComponent);
+	void BindAxis(class UInputComponent* PlayerInputComponent);
+	void BindTouch(class UInputComponent* PlayerInputComponent);	
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
