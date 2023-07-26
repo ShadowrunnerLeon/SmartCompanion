@@ -17,17 +17,27 @@ ComputerVisionModule::ComputerVisionModule(UWorld* _worldContext)
     worldContext = _worldContext;
 }
 
-void ComputerVisionModule::preProcess()
+bool ComputerVisionModule::PreProcess()
 {
 	cv::Mat blob;
 	cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
 
-    auto net = cv::dnn::readNet(nets[primaryModelName]);
-    net.setInput(blob);
-    outputs = net.forward();
+    try
+    {
+        auto net = cv::dnn::readNet(nets[primaryModelName]);
+        net.setInput(blob);
+        outputs = net.forward();
+    }
+    catch (cv::Exception& exception)
+    {
+        UE_LOG(LogTemp, Display, TEXT("PreProcess: %s"), exception.what());
+        return false;
+    }
+
+    return true;
 }
 
-std::pair<int, int> ComputerVisionModule::postProcess()
+std::pair<int, int> ComputerVisionModule::PostProcess()
 {
     EnemyDetection();
     NMS();
@@ -99,7 +109,7 @@ void ComputerVisionModule::DisplayImage()
     cv::waitKey(0);
 }
 
-float ComputerVisionModule::getRotateAngle(int x, int y)
+float ComputerVisionModule::GetRotateAngle(int x, int y)
 {
     if (y == IMG_HEIGHT) return 0;
     float tg = abs(IMG_WIDTH / 2 - x) / (IMG_HEIGHT - y);
@@ -108,7 +118,7 @@ float ComputerVisionModule::getRotateAngle(int x, int y)
     return alpha;
 }
 
-BITMAPINFOHEADER ComputerVisionModule::createBitmapHeader(int width, int height)
+BITMAPINFOHEADER ComputerVisionModule::CreateBitmapHeader(int width, int height)
 {
     BITMAPINFOHEADER  bi;
 
@@ -128,7 +138,7 @@ BITMAPINFOHEADER ComputerVisionModule::createBitmapHeader(int width, int height)
     return bi;
 }
 
-cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
+cv::Mat ComputerVisionModule::CaptureScreenMat(HWND hwnd)
 {
     cv::Mat src;
 
@@ -148,7 +158,7 @@ cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
 
     // create a bitmap
     HBITMAP hbwindow = CreateCompatibleBitmap(hwindowDC, width, height);
-    BITMAPINFOHEADER bi = createBitmapHeader(width, height);
+    BITMAPINFOHEADER bi = CreateBitmapHeader(width, height);
 
     // use the previously created device context with the bitmap
     SelectObject(hwindowCompatibleDC, hbwindow);
@@ -164,10 +174,12 @@ cv::Mat ComputerVisionModule::captureScreenMat(HWND hwnd)
     return src;
 }
 
-void ComputerVisionModule::Initialize()
+bool ComputerVisionModule::Initialize()
 {
     nets["red"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
     nets["blue"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
+
+    return true;
 }
 
 float ComputerVisionModule::Run()
@@ -176,11 +188,11 @@ float ComputerVisionModule::Run()
     CreateScreen();
     ResizeImage();
 
-    preProcess();
-    const auto [x, y] = postProcess();
+    if (!PreProcess()) return 0.f;
+    const auto [x, y] = PostProcess();
 
     //character->DeactivateFirstPersonView();
-    return getRotateAngle(x, y);
+    return GetRotateAngle(x, y);
 }
 
 void ComputerVisionModule::ActivateFirstPersonView()
@@ -194,7 +206,7 @@ void ComputerVisionModule::CreateScreen()
 {
     for (int i = 0; i < 5; ++i)
     {
-        img = captureScreenMat(GetDesktopWindow());
+        img = CaptureScreenMat(GetDesktopWindow());
         cv::imwrite(baseDir + "\\Screenshots\\screen.png", img);
     }
 

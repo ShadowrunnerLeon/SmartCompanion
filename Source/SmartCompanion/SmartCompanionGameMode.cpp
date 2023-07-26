@@ -22,7 +22,16 @@ void ASmartCompanionGameMode::DeactivateCommandHandler()
 	commandHandler->Deactivate();
 }
 
-std::queue<std::function<void()>>& ASmartCompanionGameMode::GetTaskQueue()
+void ASmartCompanionGameMode::PushTaskInQueue(std::function<void()> func)
 {
-	return taskQueue;
+	taskQueue.push(func);
+}
+
+void ASmartCompanionGameMode::UseFirstTaskFromQueue()
+{
+	if (!taskQueue.empty())
+	{
+		(taskQueue.front())();
+		taskQueue.pop();
+	}
 }

@@ -15,7 +15,7 @@ class SmartCompanionModule : public FDefaultGameModuleImpl
 		void* DynamicLibOpenCVHandle;
 
 	private:
-		const FString BasePluginDir = "D:/SmartCompanion/SmartCompanion";
+		const FString BasePluginDir = "E:/SmartCompanion";
 
 	private:
 		void StartupVosk();

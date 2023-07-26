@@ -3,8 +3,8 @@
 #include "../../ConfigData.h"
 #include "../ISmartModule.h"
 
-#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_static_x64.lib")
-#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\Vosk\\vosk-win64\\libvosk.lib")
+#pragma comment(lib, "E:\\SmartCompanion\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_static_x64.lib")
+#pragma comment(lib, "E:\\SmartCompanion\\ThirdParty\\Vosk\\vosk-win64\\libvosk.lib")
 
 #include "..\..\..\..\ThirdParty\PortAudio\Include\portaudio.h"
 #include "..\..\..\..\ThirdParty\Vosk\vosk-win64\vosk_api.h"
@@ -20,20 +20,20 @@ class SpeechRecognitionModule : public ISmartModule
 		char data[SPEECH_BUFFER_SIZE];
 
 	private:
-		void InializeModelAndRecognizer();
-		void InitializePortAudio();
-		void SetAudioDevice();
-		void OpenStream();
-		void StartStream();
+		bool InializeModelAndRecognizer();
+		bool InitializePortAudio();
+		bool SetAudioDevice();
+		bool OpenStream();
+		bool StartStream();
 		
-		void ReadDataFromStream();
+		bool ReadDataFromStream();
 		std::string Recognize();
 
 	public:
 		SpeechRecognitionModule();
 		SpeechRecognitionModule(UWorld* _worldContext);
 
-		void		Initialize()	override;
+		bool		Initialize()	override;
 		void		Shutdown()		override;
 
 		std::string Run();

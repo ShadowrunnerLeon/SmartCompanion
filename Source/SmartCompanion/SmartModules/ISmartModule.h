@@ -6,7 +6,7 @@ class ISmartModule
 		UWorld* worldContext;
 
 	public:
-		virtual void Initialize() = 0;
+		virtual bool Initialize() = 0;
 
 		template <typename T>
 		T Run() = 0;

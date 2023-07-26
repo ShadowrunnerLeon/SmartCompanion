@@ -19,8 +19,10 @@ void Kill::GeneralRun()
 	auto controller = UGameplayStatics::GetPlayerController(computerVisionModule->GetWorldContext(), 0);
 	auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
 
-	(computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().push([=]() { character->RotateOnAngleYaw(angle); });
-	(computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().push([=]() { character->OnPrimaryAction(); });
-	(computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().push([=]() { character->OnPrimaryAction(); });
-	(computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>())->GetTaskQueue().push([=]() { character->OnPrimaryAction(); });
+	auto gameMode = (computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>());
+
+	gameMode->PushTaskInQueue([=]() { character->RotateOnAngleYaw(angle); });
+	gameMode->PushTaskInQueue([=]() { character->OnPrimaryAction(); });
+	gameMode->PushTaskInQueue([=]() { character->OnPrimaryAction(); });
+	gameMode->PushTaskInQueue([=]() { character->OnPrimaryAction(); });
 }

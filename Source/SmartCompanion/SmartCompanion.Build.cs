@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class SmartCompanion : ModuleRules
 {
-    private const string baseDir = "D:\\SmartCompanion\\SmartCompanion";
+    private const string baseDir = "E:\\SmartCompanion";
 
     private void CopyToBinaries(string Filepath, ReadOnlyTargetRules Target)
     {

@@ -15,7 +15,6 @@
 
 class ComputerVisionModule : public ISmartModule
 {
-
 	private:
 		const int rows = 8400;
 
@@ -35,11 +34,11 @@ class ComputerVisionModule : public ISmartModule
 		std::string primaryModelName;
 
 	private:
-		void				preProcess();
-		std::pair<int, int>	postProcess();
-		float				getRotateAngle(int x0, int y0);
+		bool				PreProcess();
+		std::pair<int, int>	PostProcess();
+		float				GetRotateAngle(int x0, int y0);
 
-		BITMAPINFOHEADER	createBitmapHeader(int width, int height);
+		BITMAPINFOHEADER	CreateBitmapHeader(int width, int height);
 
 		void ActivateFirstPersonView();
 		void CreateScreen();
@@ -54,13 +53,13 @@ class ComputerVisionModule : public ISmartModule
 		ComputerVisionModule();
 		ComputerVisionModule(UWorld* _worldContext);
 
-		void	Initialize()	override;
+		bool	Initialize()	override;
 		void	Shutdown()		override;
 
 		float	Run();
 
-		void SetPrimaryModel(const std::string& modelName);
+		void	SetPrimaryModel(const std::string& modelName);
 		UWorld* GetWorldContext();
 
-		cv::Mat				captureScreenMat(HWND hwnd);
+		cv::Mat	CaptureScreenMat(HWND hwnd);
 };

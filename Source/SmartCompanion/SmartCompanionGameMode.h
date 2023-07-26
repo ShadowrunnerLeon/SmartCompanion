@@ -26,7 +26,8 @@ class ASmartCompanionGameMode : public AGameModeBase
 		void ActivateCommandHandler();
 		void DeactivateCommandHandler();
 
-		std::queue<std::function<void()>>& GetTaskQueue();
+		void PushTaskInQueue(std::function<void()> func);
+		void UseFirstTaskFromQueue();
 };
 
 
