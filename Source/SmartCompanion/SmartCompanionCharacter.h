@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include "SmartModules/SpeechRecognitionModule/SpeechRecognitionModule.h"
-#include "Commands/CommandHandler/CommandHandler.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "SmartCompanionCharacter.generated.h"

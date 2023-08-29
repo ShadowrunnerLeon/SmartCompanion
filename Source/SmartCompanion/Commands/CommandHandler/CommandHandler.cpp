@@ -58,7 +58,8 @@ uint32 CommandHandler::Run()
 		if (isActivateSpeechRecognition)
 		{
 			//FindCommand();
-			commandStorage["read"]->Run();
+			commandStorage["blue"]->Run();
+			isActivateSpeechRecognition = false;
 		}
 	}
 
@@ -80,6 +81,7 @@ void CommandHandler::FindCommand()
 		if (pos != std::string::npos)
 		{
 			value->Run();
+			isActivateSpeechRecognition = false;
 			break;
 		}
 	}

@@ -10,4 +10,6 @@ KillBlue::KillBlue(ComputerVisionModule* _computerVisionModule) : Kill(_computer
 
 void KillBlue::Run()
 {
+	computerVisionModule->SetPrimaryModel("blue");
+	GeneralRun();
 }

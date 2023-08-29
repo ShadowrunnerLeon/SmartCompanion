@@ -11,8 +11,6 @@
 #include <windows.h>
 #include "Windows/HideWindowsPlatformTypes.h"
 
-//#pragma comment(lib, "D:\\SmartCompanion\\SmartCompanion\\ThirdParty\\OpenCV\\lib\\opencv_world452.lib")
-
 class ComputerVisionModule : public ISmartModule
 {
 	private:
@@ -28,7 +26,7 @@ class ComputerVisionModule : public ISmartModule
 
 		std::vector<float> confidences;
 		std::vector<cv::Rect> boxes;
-		std::vector<int> indices;
+		std::vector<int> indicies;
 
 		std::map<std::string, std::string> nets;
 		std::string primaryModelName;
@@ -36,7 +34,7 @@ class ComputerVisionModule : public ISmartModule
 	private:
 		bool				PreProcess();
 		std::pair<int, int>	PostProcess();
-		float				GetRotateAngle(int x0, int y0);
+		float				GetRotateAngle(int x, int y);
 
 		BITMAPINFOHEADER	CreateBitmapHeader(int width, int height);
 
@@ -52,6 +50,7 @@ class ComputerVisionModule : public ISmartModule
 	public:
 		ComputerVisionModule();
 		ComputerVisionModule(UWorld* _worldContext);
+		~ComputerVisionModule();
 
 		bool	Initialize()	override;
 		void	Shutdown()		override;

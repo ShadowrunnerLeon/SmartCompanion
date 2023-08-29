@@ -10,6 +10,7 @@
 #include "GameFramework/InputSettings.h"
 #include "Animation/AnimInstance.h"
 #include "SmartCompanionGameMode.h"
+#include "Kismet/KismetMathLibrary.h"
 
 //////////////////////////////////////////////////////////////////////////
 // ASmartCompanionCharacter
@@ -213,5 +214,7 @@ void ASmartCompanionCharacter::SmartDeactivate()
 void ASmartCompanionCharacter::RotateOnAngleYaw(float angle)
 {
 	auto controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	controller->SetControlRotation(FRotator(0, angle, 0));
+	auto rot = GetControlRotation();
+	rot.Yaw += angle;
+	controller->SetControlRotation(rot);
 }

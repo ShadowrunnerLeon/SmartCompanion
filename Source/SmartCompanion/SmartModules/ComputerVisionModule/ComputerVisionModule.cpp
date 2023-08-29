@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include <vector>
 #include <fstream>
@@ -15,6 +16,10 @@ ComputerVisionModule::ComputerVisionModule()
 ComputerVisionModule::ComputerVisionModule(UWorld* _worldContext)
 {
     worldContext = _worldContext;
+}
+
+ComputerVisionModule::~ComputerVisionModule()
+{
 }
 
 bool ComputerVisionModule::PreProcess()
@@ -45,7 +50,7 @@ std::pair<int, int> ComputerVisionModule::PostProcess()
     ClearVectors();
     DisplayImage();
 
-    return { int((boxLeft + boxLeft + boxWidth) / 2), int((boxTop + boxTop + boxHeight) / 2) };
+    return { int(boxLeft + boxWidth / 2), int(boxTop + boxHeight / 2) };
 }
 
 void ComputerVisionModule::EnemyDetection()
@@ -71,12 +76,12 @@ void ComputerVisionModule::EnemyDetection()
 
 void ComputerVisionModule::NMS()
 {
-    cv::dnn::NMSBoxes(boxes, confidences, 0.25, 0.45, indices, 0.5);
+    cv::dnn::NMSBoxes(boxes, confidences, 0.25, 0.45, indicies, 0.5);
 }
 
 void ComputerVisionModule::DrawRectangle()
 {
-    if (indices.empty())
+    if (indicies.empty())
     {
         boxLeft = 0;
         boxTop = 0;
@@ -86,7 +91,7 @@ void ComputerVisionModule::DrawRectangle()
         return;
     }
 
-    int idx = indices[0];
+    int idx = indicies[0];
     cv::Rect box = boxes[idx];
     boxLeft = box.x;
     boxTop = box.y;
@@ -100,13 +105,14 @@ void ComputerVisionModule::ClearVectors()
 {
     confidences.clear();
     boxes.clear();
-    indices.clear();
+    indicies.clear();
 }
 
 void ComputerVisionModule::DisplayImage()
 {
     cv::imshow("Detected Enemy", img);
     cv::waitKey(0);
+    cv::destroyWindow("Detected Enemy");
 }
 
 float ComputerVisionModule::GetRotateAngle(int x, int y)
@@ -114,7 +120,8 @@ float ComputerVisionModule::GetRotateAngle(int x, int y)
     if (y == IMG_HEIGHT) return 0;
     float tg = abs(IMG_WIDTH / 2 - x) / (IMG_HEIGHT - y);
     float alpha = atan(tg) * 180 / PI;
-    alpha = (x > IMG_WIDTH / 2) ? alpha + 90 : alpha;
+    alpha = (x > IMG_WIDTH / 2) ? alpha / 2 : -alpha / 2;
+
     return alpha;
 }
 
@@ -177,7 +184,7 @@ cv::Mat ComputerVisionModule::CaptureScreenMat(HWND hwnd)
 bool ComputerVisionModule::Initialize()
 {
     nets["red"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
-    nets["blue"] = baseDir + "\\Models\\OpenCV\\red\\best.onnx";
+    nets["blue"] = baseDir + "\\Models\\OpenCV\\blue\\best.onnx";
 
     return true;
 }
@@ -190,9 +197,9 @@ float ComputerVisionModule::Run()
 
     if (!PreProcess()) return 0.f;
     const auto [x, y] = PostProcess();
+    float angle = GetRotateAngle(x, y);
 
-    //character->DeactivateFirstPersonView();
-    return GetRotateAngle(x, y);
+    return angle;
 }
 
 void ComputerVisionModule::ActivateFirstPersonView()

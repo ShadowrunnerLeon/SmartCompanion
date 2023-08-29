@@ -33,7 +33,7 @@ public class SmartCompanion : ModuleRules
 
     public void LoadPortAudio(ReadOnlyTargetRules Target)
     {
-        PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_static_x64.lib");
+        PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.lib");
         PublicIncludePaths.Add(baseDir + "\\ThirdParty\\PortAudio\\Include");
         RuntimeDependencies.Add(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.dll");
         PublicDelayLoadDLLs.Add("portaudio_x64.dll");

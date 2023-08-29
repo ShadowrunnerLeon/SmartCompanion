@@ -2,9 +2,9 @@
 
 #pragma once
 
+#include <memory>
 #include <queue>
 #include <functional>
-
 #include "Commands/CommandHandler/CommandHandler.h"
 
 #include "CoreMinimal.h"
@@ -19,7 +19,7 @@ class ASmartCompanionGameMode : public AGameModeBase
 
 	private:
 		std::queue<std::function<void()>> taskQueue;
-		TSharedPtr<CommandHandler> commandHandler;
+		std::shared_ptr<CommandHandler> commandHandler;
 
 	public:
 		ASmartCompanionGameMode();
