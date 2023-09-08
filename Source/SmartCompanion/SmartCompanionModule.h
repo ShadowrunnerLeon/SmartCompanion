@@ -9,20 +9,4 @@ class SmartCompanionModule : public FDefaultGameModuleImpl
 	public:
 		virtual void StartupModule() override;
 		virtual void ShutdownModule() override;
-
-		void* DynamicLibVoskHandle;
-		void* DynamicLibPortAudioHandle;
-		void* DynamicLibOpenCVHandle;
-
-	private:
-		const FString BasePluginDir = "E:/SmartCompanion";
-
-	private:
-		void StartupVosk();
-		void StatupPortAudio();
-		void StatupOpenCV();
-
-		void ShutdownVosk();
-		void ShutdownPortAudio();
-		void ShutdownOpenCV();
 };

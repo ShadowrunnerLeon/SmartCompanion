@@ -1,0 +1,14 @@
+﻿  ComputerVisionModule.cpp
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(61,14): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(62,17): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(108,19): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(109,19): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(129,49): warning C4305: аргумент: усечение из "double" в "const float"
+  dllmain.cpp
+     Создается библиотека C:\Users\sorok\source\repos\ComputerVisionModule\x64\Release\ComputerVisionModule.lib и объект C:\Users\sorok\source\repos\ComputerVisionModule\x64\Release\ComputerVisionModule.exp
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+C:\Users\sorok\source\repos\ComputerVisionModule\ComputerVisionModule\ComputerVisionModule.cpp(144): warning C4715: DrawRectangle: значение возвращается не при всех путях выполнения
+  All 223 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+  ComputerVisionModule.vcxproj -> C:\Users\sorok\source\repos\ComputerVisionModule\x64\Release\ComputerVisionModule.dll

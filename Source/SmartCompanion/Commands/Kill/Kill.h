@@ -1,15 +1,10 @@
 #pragma once
 
-#include "../../SmartModules/ComputerVisionModule/ComputerVisionModule.h"
+#include "../../../UEComputerVision/ComputerVisionModule.h"
 
 class Kill
-{
-	protected:
-		ComputerVisionModule* computerVisionModule;
-	
+{	
 	public:
-		Kill();
-		Kill(ComputerVisionModule* _computerVisionModule);
-
+		Kill() = default;
 		void GeneralRun();
 };

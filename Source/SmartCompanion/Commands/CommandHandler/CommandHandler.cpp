@@ -40,9 +40,9 @@ bool CommandHandler::Init()
 {
 	UE_LOG(LogTemp, Display, TEXT("CommandHandler initialize"));
 
-	commandStorage["red"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
-	commandStorage["read"] = std::shared_ptr<ICommand>(new KillRed(&computerVisionModule));
-	commandStorage["blue"] = std::shared_ptr<ICommand>(new KillBlue(&computerVisionModule));
+	commandStorage.Add(FString("red"), TSharedPtr<ICommand>(new KillRed(&computerVisionModule)));
+	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed(&computerVisionModule)));
+	commandStorage.Add(FString("blue"), TSharedPtr<ICommand>(new KillBlue(&computerVisionModule)));
 
 	speechRecoginitonModule.Initialize();
 	computerVisionModule.Initialize();
@@ -58,7 +58,7 @@ uint32 CommandHandler::Run()
 		if (isActivateSpeechRecognition)
 		{
 			//FindCommand();
-			commandStorage["blue"]->Run();
+			commandStorage[FString("blue")]->Run();
 			isActivateSpeechRecognition = false;
 		}
 	}
@@ -77,7 +77,8 @@ void CommandHandler::FindCommand()
 
 	for (auto& [key, value] : commandStorage)
 	{
-		auto pos = text.find(key);
+		auto convertedKey = TCHAR_TO_UTF8(*key);
+		auto pos = text.find(convertedKey);
 		if (pos != std::string::npos)
 		{
 			value->Run();

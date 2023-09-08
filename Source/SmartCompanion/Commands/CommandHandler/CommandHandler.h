@@ -3,12 +3,11 @@
 #include "CoreMinimal.h"
 #include "HAL/Runnable.h"
 #include "../ICommand.h"
-#include "../../SmartModules/SpeechRecognitionModule/SpeechRecognitionModule.h"
-#include "../../SmartModules/ComputerVisionModule/ComputerVisionModule.h"
+#include "../../../UESpeechRecognition/SpeechRecognitionModule.h"
+#include "../../../UEComputerVision/ComputerVisionModule.h"
 
-#include <map>
+#include "Templates/SharedPointer.h"
 #include <string>
-#include <memory>
 
 class CommandHandler : public FRunnable
 {
@@ -32,7 +31,8 @@ class CommandHandler : public FRunnable
 
 		bool isActivateSpeechRecognition;
 
-		std::map<std::string, std::shared_ptr<ICommand>> commandStorage;
+		//std::map<std::string, std::shared_ptr<ICommand>> commandStorage;
+		TMap<FString, TSharedPtr<ICommand>> commandStorage;
 
 		SpeechRecognitionModule speechRecoginitonModule;
 		ComputerVisionModule computerVisionModule;

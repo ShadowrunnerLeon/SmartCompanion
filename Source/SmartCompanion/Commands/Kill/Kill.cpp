@@ -3,21 +3,16 @@
 #include "../../SmartCompanionGameMode.h"
 
 #include <Kismet/GameplayStatics.h>
-
-Kill::Kill()
-{
-}
-
-Kill::Kill(ComputerVisionModule* _computerVisionModule) : computerVisionModule(_computerVisionModule)
-{
-}
+#include <Modules/ModuleManager.h>
 
 void Kill::GeneralRun()
 {
-	float angle = computerVisionModule->Run();
-
+	auto computerVisionModule = FModuleManager::Get().LoadModuleChecked(TEXT("UEComputerVision"));
 	auto controller = UGameplayStatics::GetPlayerController(computerVisionModule->GetWorldContext(), 0);
 	auto character = (ASmartCompanionCharacter*)(controller->GetPawn());
+
+	character->ActivateFirstPersonView();
+	float angle = computerVisionModule->Run();
 
 	auto gameMode = (computerVisionModule->GetWorldContext()->GetAuthGameMode<ASmartCompanionGameMode>());
 
