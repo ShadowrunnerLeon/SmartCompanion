@@ -15,18 +15,17 @@ CommandHandler::CommandHandler()
 }
 
 CommandHandler::CommandHandler(UWorld* _worldContext) :
-	worldContext(_worldContext),
-	speechRecoginitonModule(_worldContext),
-	computerVisionModule(_worldContext)
+	worldContext(_worldContext)
 {
+	SPEECHRECOGNITION_SINGLETON.SetWorldContext(_worldContext);
+	COMPUTERVISION_SINGLETON.SetWorldContext(_worldContext);
+
 	isActivateSpeechRecognition = false;
 	thread = FRunnableThread::Create(this, TEXT("CommandHandlerThread"));
 }
 
 CommandHandler::~CommandHandler()
 {
-	speechRecoginitonModule.Shutdown();
-
 	if (thread)
 	{
 		thread->Kill();
@@ -40,12 +39,12 @@ bool CommandHandler::Init()
 {
 	UE_LOG(LogTemp, Display, TEXT("CommandHandler initialize"));
 
-	commandStorage.Add(FString("red"), TSharedPtr<ICommand>(new KillRed(&computerVisionModule)));
-	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed(&computerVisionModule)));
-	commandStorage.Add(FString("blue"), TSharedPtr<ICommand>(new KillBlue(&computerVisionModule)));
+	commandStorage.Add(FString("red"), TSharedPtr<ICommand>(new KillRed()));
+	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed()));
+	commandStorage.Add(FString("blue"), TSharedPtr<ICommand>(new KillBlue()));
 
-	speechRecoginitonModule.Initialize();
-	computerVisionModule.Initialize();
+	SPEECHRECOGNITION_SINGLETON.Initialize();
+	COMPUTERVISION_SINGLETON.Initialize();
 
 	bRunThread = true;
 	return true;

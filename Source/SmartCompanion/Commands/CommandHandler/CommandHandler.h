@@ -2,12 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "HAL/Runnable.h"
-#include "../ICommand.h"
-#include "../../../UESpeechRecognition/SpeechRecognitionModule.h"
-#include "../../../UEComputerVision/ComputerVisionModule.h"
+#include <Modules/ModuleManager.h>
+#include <Templates/SharedPointer.h>
 
-#include "Templates/SharedPointer.h"
 #include <string>
+
+#include "../ICommand.h"
+#include "../../../UESpeechRecognition/UESpeechRecognitionModule.h"
+#include "../../../UEComputerVision/UEComputerVisionModule.h"
 
 class CommandHandler : public FRunnable
 {
@@ -30,12 +32,10 @@ class CommandHandler : public FRunnable
 		bool bRunThread;
 
 		bool isActivateSpeechRecognition;
-
-		//std::map<std::string, std::shared_ptr<ICommand>> commandStorage;
 		TMap<FString, TSharedPtr<ICommand>> commandStorage;
 
-		SpeechRecognitionModule speechRecoginitonModule;
-		ComputerVisionModule computerVisionModule;
+		UESpeechRecognitionModule speechRecoginitonModule;
+		UEComputerVisionModule computerVisionModule;
 
 		UWorld* worldContext;
 };

@@ -1,7 +1,10 @@
 #include "KillRed.h"
+#include "../../../../UEComputerVision/UEComputerVisionModule.h"
+
+#include <Modules/ModuleManager.h>
 
 void KillRed::Run()
 {
-	computerVisionModule->SetPrimaryModel("red");
+	COMPUTERVISION_SINGLETON.SetPrimaryModel("red");
 	GeneralRun();
 }

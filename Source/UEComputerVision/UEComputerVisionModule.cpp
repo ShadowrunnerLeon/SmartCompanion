@@ -2,6 +2,7 @@
 
 #include "UEComputerVisionModule.h"
 #include "Modules/ModuleManager.h"
+#include <windows.h>
 
 void UEComputerVisionModule::StatupUEComputerVisionModule()
 {
@@ -36,12 +37,11 @@ void UEComputerVisionModule::ShutdownModule()
 
 bool UEComputerVisionModule::Initialize()
 {
-    nets[FString("red")] = BasePluginDir + FString("\\Models\\OpenCV\\red\\best.onnx");
-    nets[FString("blue")] = BasePluginDir + FString("\\Models\\OpenCV\\blue\\best.onnx");
+	nets.Add(FString("red"), BasePluginDir + FString("\\Models\\OpenCV\\red\\best.onnx"));
+	nets.Add(FString("blue"), BasePluginDir + FString("\\Models\\OpenCV\\blue\\best.onnx"));
 
 	ComputerVisionModuleDLL_Run = (float(*)(const std::string&, const std::string&, const int, const int))FPlatformProcess::GetDllExport(DynamicLibComputerVisionModuleHandle, TEXT("Run"));
-
-    return true;
+	return (ComputerVisionModuleDLL_Run) ? true : false;
 }
 
 float UEComputerVisionModule::Run()

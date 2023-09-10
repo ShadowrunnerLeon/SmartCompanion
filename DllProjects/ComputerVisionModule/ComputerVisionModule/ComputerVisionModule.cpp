@@ -2,7 +2,7 @@
 
 static const int rows = 8400;
 
-COMPUTERVISIONMODULE_API float Run(const std::string& baseDir, const std::string& netPath, const int IMG_HEIGHT, const int IMG_WIDTH)
+COMPUTERVISIONMODULE_API float Run(const std::string& baseDir, const std::string& netPath, const float IMG_HEIGHT, const float IMG_WIDTH)
 {
     cv::Mat img;
     CreateScreen(baseDir, img);
@@ -15,7 +15,7 @@ COMPUTERVISIONMODULE_API float Run(const std::string& baseDir, const std::string
     return angle;
 }
 
-cv::Mat PreProcess(const std::string& netPath, cv::Mat& img, const int IMG_HEIGHT, const int IMG_WIDTH)
+cv::Mat PreProcess(const std::string& netPath, cv::Mat& img, const float IMG_HEIGHT, const float IMG_WIDTH)
 {
     cv::Mat blob;
     cv::dnn::blobFromImage(img, blob, 1. / 255., cv::Size(640, 640), cv::Scalar(), true, false);
@@ -36,7 +36,7 @@ cv::Mat PreProcess(const std::string& netPath, cv::Mat& img, const int IMG_HEIGH
     return outputs;
 }
 
-std::pair<int, int>	PostProcess(cv::Mat& img, cv::Mat& outputs, const int IMG_HEIGHT, const int IMG_WIDTH)
+std::pair<int, int>	PostProcess(cv::Mat& img, cv::Mat& outputs, const float IMG_HEIGHT, const float IMG_WIDTH)
 {
     std::vector<float> confidences;
     std::vector<cv::Rect> boxes;
@@ -55,7 +55,7 @@ std::pair<int, int>	PostProcess(cv::Mat& img, cv::Mat& outputs, const int IMG_HE
     return { int(boxLeft + boxWidth / 2), int(boxTop + boxHeight / 2) };
 }
 
-float GetRotateAngle(const int IMG_HEIGHT, const int IMG_WIDTH, int x, int y)
+float GetRotateAngle(const float IMG_HEIGHT, const float IMG_WIDTH, int x, int y)
 {
     if (y == IMG_HEIGHT) return 0;
     float tg = abs(IMG_WIDTH / 2 - x) / (IMG_HEIGHT - y);
@@ -103,7 +103,7 @@ void ResizeImage(cv::Mat& img)
     img = resizedImg;
 }
 
-void EnemyDetection(cv::Mat & outputs, std::vector<cv::Rect>& boxes, std::vector<float>& confidences, const int IMG_HEIGHT, const int IMG_WIDTH)
+void EnemyDetection(cv::Mat& outputs, std::vector<cv::Rect>& boxes, std::vector<float>& confidences, const float IMG_HEIGHT, const float IMG_WIDTH)
 {
     float xFactor = IMG_WIDTH / IMG_WIDTH;
     float yFactor = IMG_HEIGHT / IMG_WIDTH;
@@ -141,6 +141,7 @@ cv::Rect DrawRectangle(cv::Mat& img, std::vector<cv::Rect>& boxes, std::vector<i
     int boxHeight = box.height;
 
     cv::rectangle(img, cv::Point(boxLeft, boxTop), cv::Point(boxLeft + boxWidth, boxTop + boxHeight), cv::Scalar(0, 255, 0), 3);
+    return box;
 }
 
 void DisplayImage(cv::Mat& img)

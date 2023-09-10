@@ -6,6 +6,8 @@
 #include "../ConfigData.h"
 #include "../ISmartModule.h"
 
+#define COMPUTERVISION_SINGLETON		((UEComputerVisionModule&)(FModuleManager::Get().LoadModuleChecked(TEXT("UEComputerVision"))))
+
 class UEComputerVisionModule : public ISmartModule
 {
 	private:
@@ -24,10 +26,10 @@ class UEComputerVisionModule : public ISmartModule
 		void ShutdownUEComputerVisionModule();
 
 	public:
-		void StartupModule() override;
-		void ShutdownModule() override;
+		UECOMPUTERVISION_API void StartupModule() override;
+		UECOMPUTERVISION_API void ShutdownModule() override;
 
-		UECOMPUTERVISION_API bool	Initialize()	override;
+		UECOMPUTERVISION_API bool	Initialize() override;
 		UECOMPUTERVISION_API float	Run();
 		UECOMPUTERVISION_API void	SetPrimaryModel(const FString& modelName);
 };

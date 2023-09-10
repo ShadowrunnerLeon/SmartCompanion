@@ -12,6 +12,8 @@
 #include "..\..\ThirdParty\PortAudio\Include\portaudio.h"
 #include "..\..\ThirdParty\Vosk\vosk-win64\vosk_api.h"
 
+#define SPEECHRECOGNITION_SINGLETON 	((UESpeechRecognitionModule&)(FModuleManager::Get().LoadModuleChecked(TEXT("UESpeechRecognition"))))
+
 class UESpeechRecognitionModule : public ISmartModule
 {
 	private:
@@ -44,8 +46,8 @@ class UESpeechRecognitionModule : public ISmartModule
 		void ShutdownPortAudio();
 
 	public:
-		void StartupModule() override;
-		void ShutdownModule() override;
+		UESPEECHRECOGNITION_API void StartupModule() override;
+		UESPEECHRECOGNITION_API void ShutdownModule() override;
 
 		UESPEECHRECOGNITION_API bool Initialize() override;
 		UESPEECHRECOGNITION_API std::string Run();

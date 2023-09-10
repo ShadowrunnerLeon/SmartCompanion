@@ -36,13 +36,13 @@ void UESpeechRecognitionModule::StatupPortAudio()
 
 void UESpeechRecognitionModule::ShutdownVosk()
 {
-	FPlatformProcess::FreeDllHandle(DynamicLibVoskHandle);
+	if (DynamicLibVoskHandle) FPlatformProcess::FreeDllHandle(DynamicLibVoskHandle);
 	DynamicLibVoskHandle = nullptr;
 }
 
 void UESpeechRecognitionModule::ShutdownPortAudio()
 {
-	FPlatformProcess::FreeDllHandle(DynamicLibPortAudioHandle);
+	if (DynamicLibPortAudioHandle) FPlatformProcess::FreeDllHandle(DynamicLibPortAudioHandle);
 	DynamicLibPortAudioHandle = nullptr;
 }
 
@@ -58,8 +58,8 @@ void UESpeechRecognitionModule::ShutdownModule()
 	vosk_recognizer_free(recognizer);
 	vosk_model_free(model);
 
-	ShutdownVosk();
-	ShutdownPortAudio();
+	if (DynamicLibVoskHandle) ShutdownVosk();
+	if (DynamicLibPortAudioHandle) ShutdownPortAudio();
 }
 
 bool UESpeechRecognitionModule::Initialize()
@@ -183,7 +183,6 @@ std::string UESpeechRecognitionModule::Recognize()
 
 	return resJSON.get("text");
 }
-
 
 IMPLEMENT_MODULE(UESpeechRecognitionModule, UESpeechRecognition);
  

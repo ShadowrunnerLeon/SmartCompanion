@@ -1,7 +1,10 @@
 #include "KillBlue.h"
+#include "../../../../UEComputerVision/UEComputerVisionModule.h"
+
+#include <Modules/ModuleManager.h>
 
 void KillBlue::Run()
 {
-	computerVisionModule->SetPrimaryModel("blue");
+	COMPUTERVISION_SINGLETON.SetPrimaryModel("blue");
 	GeneralRun();
 }
