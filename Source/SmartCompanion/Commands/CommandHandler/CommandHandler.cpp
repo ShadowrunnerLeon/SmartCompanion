@@ -43,9 +43,6 @@ bool CommandHandler::Init()
 	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed()));
 	commandStorage.Add(FString("blue"), TSharedPtr<ICommand>(new KillBlue()));
 
-	SPEECHRECOGNITION_SINGLETON.Initialize();
-	COMPUTERVISION_SINGLETON.Initialize();
-
 	bRunThread = true;
 	return true;
 }

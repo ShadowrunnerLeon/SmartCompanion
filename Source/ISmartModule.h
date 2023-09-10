@@ -11,8 +11,6 @@ class ISmartModule : public FDefaultGameModuleImpl
 		template <typename T>
 		T Run() = 0;
 
-		virtual bool Initialize() = 0;
-
 		void SetWorldContext(UWorld* _worldContext) { worldContext = _worldContext; }
 		UWorld* GetWorldContext() { return worldContext; }
 

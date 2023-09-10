@@ -49,6 +49,5 @@ class UESpeechRecognitionModule : public ISmartModule
 		UESPEECHRECOGNITION_API void StartupModule() override;
 		UESPEECHRECOGNITION_API void ShutdownModule() override;
 
-		UESPEECHRECOGNITION_API bool Initialize() override;
 		UESPEECHRECOGNITION_API std::string Run();
 };

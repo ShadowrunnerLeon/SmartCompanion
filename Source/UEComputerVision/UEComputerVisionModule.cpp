@@ -28,20 +28,16 @@ void UEComputerVisionModule::ShutdownUEComputerVisionModule()
 void UEComputerVisionModule::StartupModule()
 {
 	StatupUEComputerVisionModule();
+
+	nets.Add(FString("red"), BasePluginDir + FString("\\Models\\OpenCV\\red\\best.onnx"));
+	nets.Add(FString("blue"), BasePluginDir + FString("\\Models\\OpenCV\\blue\\best.onnx"));
+
+	ComputerVisionModuleDLL_Run = (float(*)(const std::string&, const std::string&, const int, const int))FPlatformProcess::GetDllExport(DynamicLibComputerVisionModuleHandle, TEXT("Run"));
 }
 
 void UEComputerVisionModule::ShutdownModule()
 {
 	ShutdownUEComputerVisionModule();
-}
-
-bool UEComputerVisionModule::Initialize()
-{
-	nets.Add(FString("red"), BasePluginDir + FString("\\Models\\OpenCV\\red\\best.onnx"));
-	nets.Add(FString("blue"), BasePluginDir + FString("\\Models\\OpenCV\\blue\\best.onnx"));
-
-	ComputerVisionModuleDLL_Run = (float(*)(const std::string&, const std::string&, const int, const int))FPlatformProcess::GetDllExport(DynamicLibComputerVisionModuleHandle, TEXT("Run"));
-	return (ComputerVisionModuleDLL_Run) ? true : false;
 }
 
 float UEComputerVisionModule::Run()

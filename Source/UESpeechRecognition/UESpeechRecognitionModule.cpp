@@ -48,8 +48,14 @@ void UESpeechRecognitionModule::ShutdownPortAudio()
 
 void UESpeechRecognitionModule::StartupModule()
 {
-	StartupVosk();
-	StatupPortAudio();
+	//StartupVosk();
+	//StatupPortAudio();
+
+	if (!InializeModelAndRecognizer()) return;
+	if (!InitializePortAudio()) return;
+	if (!SetAudioDevice()) return;
+	if (!OpenStream()) return;
+	if (!StartStream()) return;
 }
 
 void UESpeechRecognitionModule::ShutdownModule()
@@ -58,19 +64,8 @@ void UESpeechRecognitionModule::ShutdownModule()
 	vosk_recognizer_free(recognizer);
 	vosk_model_free(model);
 
-	if (DynamicLibVoskHandle) ShutdownVosk();
-	if (DynamicLibPortAudioHandle) ShutdownPortAudio();
-}
-
-bool UESpeechRecognitionModule::Initialize()
-{
-	if (!InializeModelAndRecognizer()) return false;
-	if (!InitializePortAudio()) return false;
-	if (!SetAudioDevice()) return false;
-	if (!OpenStream()) return false;
-	if (!StartStream()) return false;
-
-	return true;
+	//if (DynamicLibVoskHandle) ShutdownVosk();
+	//if (DynamicLibPortAudioHandle) ShutdownPortAudio();
 }
 
 bool UESpeechRecognitionModule::InializeModelAndRecognizer()

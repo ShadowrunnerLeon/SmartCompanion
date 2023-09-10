@@ -29,7 +29,6 @@ class UEComputerVisionModule : public ISmartModule
 		UECOMPUTERVISION_API void StartupModule() override;
 		UECOMPUTERVISION_API void ShutdownModule() override;
 
-		UECOMPUTERVISION_API bool	Initialize() override;
 		UECOMPUTERVISION_API float	Run();
 		UECOMPUTERVISION_API void	SetPrimaryModel(const FString& modelName);
 };
