@@ -22,9 +22,7 @@ public class UEComputerVision : ModuleRules
     {
         PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\ComputerVisionModule\\lib\\ComputerVisionModule.lib");
         RuntimeDependencies.Add(baseDir + "\\ThirdParty\\ComputerVisionModule\\bin\\ComputerVisionModule.dll");
-        PublicDelayLoadDLLs.Add("ComputerVisionModule.dll");
-
-        PublicIncludePaths.Add(baseDir + "\\ThirdParty\\OpenCV\\include");
+        //PublicDelayLoadDLLs.Add("ComputerVisionModule.dll");
 
         CopyToBinaries(baseDir + "\\ThirdParty\\ComputerVisionModule\\bin\\ComputerVisionModule.dll", Target);
     }

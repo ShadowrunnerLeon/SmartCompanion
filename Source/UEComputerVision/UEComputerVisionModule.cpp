@@ -32,7 +32,7 @@ void UEComputerVisionModule::StartupModule()
 	nets.Add(FString("red"), BasePluginDir + FString("\\Models\\OpenCV\\red\\best.onnx"));
 	nets.Add(FString("blue"), BasePluginDir + FString("\\Models\\OpenCV\\blue\\best.onnx"));
 
-	ComputerVisionModuleDLL_Run = (float(*)(const std::string&, const std::string&, const int, const int))FPlatformProcess::GetDllExport(DynamicLibComputerVisionModuleHandle, TEXT("Run"));
+	ComputerVisionModuleDLL_Run = (float(*)(const std::string&, const std::string&, const float, const float))FPlatformProcess::GetDllExport(DynamicLibComputerVisionModuleHandle, TEXT("Run"));
 }
 
 void UEComputerVisionModule::ShutdownModule()
@@ -42,7 +42,7 @@ void UEComputerVisionModule::ShutdownModule()
 
 float UEComputerVisionModule::Run()
 {
-	return ComputerVisionModuleDLL_Run(TCHAR_TO_UTF8(*BasePluginDir), TCHAR_TO_UTF8(*primaryModelName), IMG_HEIGHT, IMG_WIDTH);
+	return ComputerVisionModuleDLL_Run(TCHAR_TO_UTF8(*BasePluginDir), TCHAR_TO_UTF8(*(nets[primaryModelName])), IMG_HEIGHT, IMG_WIDTH);
 }
 
 void UEComputerVisionModule::SetPrimaryModel(const FString& modelName)

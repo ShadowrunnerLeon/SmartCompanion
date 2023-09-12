@@ -19,7 +19,7 @@ class UEComputerVisionModule : public ISmartModule
 		const FString BasePluginDir = "E:/SmartCompanion";
 		void* DynamicLibComputerVisionModuleHandle;
 
-		float (*ComputerVisionModuleDLL_Run)(const std::string&, const std::string&, const int, const int);
+		float (*ComputerVisionModuleDLL_Run)(const std::string&, const std::string&, const float, const float);
 
 	private:
 		void StatupUEComputerVisionModule();
