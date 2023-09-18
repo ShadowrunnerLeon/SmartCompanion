@@ -18,27 +18,17 @@ public class UESpeechRecognition : ModuleRules
             File.Copy(Filepath, Path.Combine(binariesDir, filename), true);
     }
 
-    public void LoadVosk(ReadOnlyTargetRules Target)
+    public void LoadSpeechRecognitionModule(ReadOnlyTargetRules Target)
     {
-        PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libvosk.lib");
-        PublicIncludePaths.Add(baseDir + "\\ThirdParty\\Vosk\\vosk-win64");
-        RuntimeDependencies.Add(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libvosk.dll");
-        PublicDelayLoadDLLs.Add("libvosk.dll");
+        PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\SpeechRecognitionModule\\lib\\SpeechRecognitionModule.lib");
+        RuntimeDependencies.Add(baseDir + "\\ThirdParty\\SpeechRecognitionModule\\bin\\SpeechRecognitionModule.dll");
 
+        CopyToBinaries(baseDir + "\\ThirdParty\\SpeechRecognitionModule\\bin\\SpeechRecognitionModule.dll", Target);
+        CopyToBinaries(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.dll", Target);
         CopyToBinaries(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libgcc_s_seh-1.dll", Target);
         CopyToBinaries(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libstdc++-6.dll", Target);
         CopyToBinaries(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libwinpthread-1.dll", Target);
         CopyToBinaries(baseDir + "\\ThirdParty\\Vosk\\vosk-win64\\libvosk.dll", Target);
-    }
-
-    public void LoadPortAudio(ReadOnlyTargetRules Target)
-    {
-        PublicAdditionalLibraries.Add(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.lib");
-        PublicIncludePaths.Add(baseDir + "\\ThirdParty\\PortAudio\\Include");
-        RuntimeDependencies.Add(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.dll");
-        PublicDelayLoadDLLs.Add("portaudio_x64.dll");
-
-        CopyToBinaries(baseDir + "\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_x64.dll", Target);
     }
 
     public UESpeechRecognition(ReadOnlyTargetRules Target) : base(Target)
@@ -50,7 +40,6 @@ public class UESpeechRecognition : ModuleRules
             "Core"
         });
 
-        LoadVosk(Target);
-        LoadPortAudio(Target);
+        LoadSpeechRecognitionModule(Target);
     }
 }

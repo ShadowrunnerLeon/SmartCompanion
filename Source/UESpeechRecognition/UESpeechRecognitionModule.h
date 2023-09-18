@@ -6,48 +6,23 @@
 #include "../ConfigData.h"
 #include "../ISmartModule.h"
 
-#pragma comment(lib, "E:\\SmartCompanion\\ThirdParty\\PortAudio\\Lib\\Release\\portaudio_static_x64.lib")
-#pragma comment(lib, "E:\\SmartCompanion\\ThirdParty\\Vosk\\vosk-win64\\libvosk.lib")
-
-#include "..\..\ThirdParty\PortAudio\Include\portaudio.h"
-#include "..\..\ThirdParty\Vosk\vosk-win64\vosk_api.h"
-
 #define SPEECHRECOGNITION_SINGLETON 	((UESpeechRecognitionModule&)(FModuleManager::Get().LoadModuleChecked(TEXT("UESpeechRecognition"))))
 
 class UESpeechRecognitionModule : public ISmartModule
 {
 	private:
-		VoskModel* model;
-		VoskRecognizer* recognizer;
-		PaStream* stream;
-		PaStreamParameters inputParametrs;
-
-		char data[SPEECH_BUFFER_SIZE];
-
-		const FString BasePluginDir = "E:/SmartCompanion";
-
-		void* DynamicLibVoskHandle;
-		void* DynamicLibPortAudioHandle;
+		void* DynamicLibSpeechRecognitionModuleHandle;
 
 	private:
-		bool InializeModelAndRecognizer();
-		bool InitializePortAudio();
-		bool SetAudioDevice();
-		bool OpenStream();
-		bool StartStream();
-		
-		bool ReadDataFromStream();
-		std::string Recognize();
+		const char* (*Initialize)();
+    	void (*Shutdown)();
 
-		void StartupVosk();
-		void StatupPortAudio();
-
-		void ShutdownVosk();
-		void ShutdownPortAudio();
+		void StartupUESpeechRecognitionModule();
+		void ShutdownUESpeechRecognitionModule();
 
 	public:
 		UESPEECHRECOGNITION_API void StartupModule() override;
 		UESPEECHRECOGNITION_API void ShutdownModule() override;
 
-		UESPEECHRECOGNITION_API std::string Run();
+		const char* (*Run)();
 };

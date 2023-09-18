@@ -41,7 +41,10 @@ bool CommandHandler::Init()
 
 	commandStorage.Add(FString("red"), TSharedPtr<ICommand>(new KillRed()));
 	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed()));
+	commandStorage.Add(FString("and"), TSharedPtr<ICommand>(new KillRed()));
+	commandStorage.Add(FString("read"), TSharedPtr<ICommand>(new KillRed()));
 	commandStorage.Add(FString("blue"), TSharedPtr<ICommand>(new KillBlue()));
+	commandStorage.Add(FString("you"), TSharedPtr<ICommand>(new KillBlue()));
 
 	bRunThread = true;
 	return true;
@@ -53,8 +56,8 @@ uint32 CommandHandler::Run()
 	{
 		if (isActivateSpeechRecognition)
 		{
-			//FindCommand();
-			commandStorage[FString("blue")]->Run();
+			for (int i = 0; i < 10; ++i) FindCommand();
+			//commandStorage[FString("blue")]->Run();
 			isActivateSpeechRecognition = false;
 		}
 	}
@@ -69,7 +72,7 @@ void CommandHandler::Stop()
 
 void CommandHandler::FindCommand()
 {
-	auto text = speechRecoginitonModule.Run();
+	std::string text(SPEECHRECOGNITION_SINGLETON.Run());
 
 	for (auto& [key, value] : commandStorage)
 	{

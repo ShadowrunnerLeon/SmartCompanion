@@ -25,6 +25,7 @@ public class UEComputerVision : ModuleRules
         //PublicDelayLoadDLLs.Add("ComputerVisionModule.dll");
 
         CopyToBinaries(baseDir + "\\ThirdParty\\ComputerVisionModule\\bin\\ComputerVisionModule.dll", Target);
+        CopyToBinaries(baseDir + "\\ThirdParty\\OpenCV\\bin\\opencv_world470.dll", Target);
     }
 
     public UEComputerVision(ReadOnlyTargetRules Target) : base(Target)

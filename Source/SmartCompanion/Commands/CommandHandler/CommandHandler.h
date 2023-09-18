@@ -33,9 +33,5 @@ class CommandHandler : public FRunnable
 
 		bool isActivateSpeechRecognition;
 		TMap<FString, TSharedPtr<ICommand>> commandStorage;
-
-		UESpeechRecognitionModule speechRecoginitonModule;
-		UEComputerVisionModule computerVisionModule;
-
 		UWorld* worldContext;
 };
