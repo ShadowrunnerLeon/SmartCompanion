@@ -1,5 +1,3 @@
-## Work in progress (speech recognition and image processing works)
-
 # Targets
 - add cross-platform (for now Windows)
 
